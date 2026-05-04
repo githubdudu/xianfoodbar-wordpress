@@ -1,0 +1,36 @@
+{
+  "entrypoints": {
+    "admin-login": {
+      "css": [
+        "/wp-content/themes/mytheme/public/build/admin-login.9b97bc3c.css"
+      ],
+      "js": [
+        "/wp-content/themes/mytheme/public/build/admin-login.a579e626.js"
+      ]
+    },
+    "admin": {
+      "css": [
+        "/wp-content/themes/mytheme/public/build/admin.9632253d.css"
+      ],
+      "js": [
+        "/wp-content/themes/mytheme/public/build/admin.f350607a.js"
+      ]
+    },
+    "admin-orderList": {
+      "css": [
+        "/wp-content/themes/mytheme/public/build/admin-orderList.68206c01.css"
+      ],
+      "js": [
+        "/wp-content/themes/mytheme/public/build/admin-orderList.e8b30c2c.js"
+      ]
+    },
+    "admin-cookadmin": {
+      "css": [
+        "/wp-content/themes/mytheme/public/build/admin-cookadmin.5ac2de29.css"
+      ],
+      "js": [
+        "/wp-content/themes/mytheme/public/build/admin-cookadmin.fba496bd.js"
+      ]
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}后台登录{% endblock %}
+
+{% block stylesheets %}
+{{ encore_entry_link_tags("admin-login") }}
+{% endblock %}
+
+{% block javascripts %}
+{{ encore_entry_script_tags("admin-login") }}
+{% endblock %}
+
+{% block body %}
+<div id="admin" style="background: url({{ asset('build/images/bg.png') }})">
+</div>
+{% endblock %}

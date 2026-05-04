@@ -1,0 +1,41 @@
+{% extends 'admin/admin.base.html.twig' %} 
+{% block title %}{{ title }}{% endblock %}
+{% block stylesheets %} {{ encore_entry_link_tags("admin-cookadmin") }} {% endblock %} {% block javascripts %} {{ encore_entry_script_tags("admin-cookadmin") }} 
+{% endblock%} 
+{% block body %}
+<style>
+    .td_bold {
+        font-weight: bold;
+        border-right: 2px solid #3a3a3a !important;
+        border-bottom: 2px solid #3a3a3a !important;
+    }
+
+    th.td_alert_note {
+        background-color: {{ active_order }} !important;
+    }
+
+    {# td.td_alert_note:not(:empty) {
+        background-color: {{ active_order }} !important;
+    } #}
+
+    {% if td_alert %}
+    td.td_alert_note {
+        background-color: {{ active_order }} !important;
+    }
+    {% endif %}
+
+    .new_alert {
+        background-color: {{ new_active_order }} !important;
+    }
+
+    .admin_show .bigFont {
+        font-size: {{ bigFonts }}px !important;
+    }
+
+    .is_new_added {
+        background-color: {{ add_active_order }} !important;
+    }
+</style>
+<div id="admin" class="center-main">
+</div>
+{% endblock %}

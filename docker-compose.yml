@@ -1,0 +1,53 @@
+services:
+
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  wordpress:
+    image: wordpress:php8.1-apache
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_TABLE_PREFIX: wp_
+      WORDPRESS_DEBUG: "1"
+    volumes:
+      - ./mytheme:/var/www/html/wp-content/themes/mytheme
+      - wp_core:/var/www/html
+      - wp_uploads:/var/www/html/wp-content/uploads
+    # Runs as root: fixes write permissions on theme subdirs, then hands off to
+    # the original WP entrypoint (which generates wp-config.php and starts Apache).
+    entrypoint: >
+      bash -c "
+        chmod -R 777 /var/www/html/wp-content/themes/mytheme/var &&
+        chmod -R 777 /var/www/html/wp-content/themes/mytheme/public/build &&
+        chmod -R 777 /var/www/html/wp-content/themes/mytheme/public/upload &&
+        chmod 777 /var/www/html/wp-content/themes/mytheme &&
+        chmod 777 /var/www/html/wp-content/themes/mytheme/src &&
+        exec docker-entrypoint.sh apache2-foreground
+      "
+
+volumes:
+  db_data:
+  wp_core:
+  wp_uploads:

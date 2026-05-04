@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+
+        <link src="/wp-content/themes/mytheme/styles.css?v={{ random(0, 9999) }}" rel="stylesheet"> 
+        {% block stylesheets %}
+        {% endblock %}
+        {% autoescape false %}
+        <script>
+            window.root_admin = '/adminpanel';
+            window.default_path = '{{ default_path }}';
+            window.publicPath = '{{ default_path }}';
+            {% if siteConfig is defined %}
+            window.siteConfig = {{ siteConfig|json_encode }}
+            {% else %}
+            window.siteConfig = {
+        
+            };
+            {% endif %}
+        </script>
+        {% endautoescape %}
+        {% block javascripts %}
+        {% endblock %}
+        <style>.ant-table-footer div {text-align:left !important;} .ant-menu.ant-menu-dark .ant-menu-item-selected {background-color:#C91C1C !important;} .openMenu {background-color:#C91C1C !important;}</style>
+        <style>
+.orderTables {
+  padding-bottom: 90px;
+}
+
+.orderInfo {
+  overflow-y: auto !important;
+}
+        </style>
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+</html>

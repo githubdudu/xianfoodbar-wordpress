@@ -1,0 +1,20 @@
+# Environment
+.env
+.env.local
+
+# Symfony cache & logs
+mytheme/var/cache/
+mytheme/var/log/
+mytheme/var/orderdata_*.json
+mytheme/var/status/
+
+# Composer dependencies
+mytheme/vendor/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo

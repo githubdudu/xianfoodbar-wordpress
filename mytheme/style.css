@@ -1,0 +1,27 @@
+/*
+Theme Name: My Theme
+Author: Yue Team
+Description: 点餐的系统 
+Version: 1.9.1
+Requires PHP: 8.1
+Tags: one-column, two-columns, right-sidebar, flexible-header, accessibility-ready, custom-colors, custom-header, custom-menu, custom-logo, editor-style, featured-images, footer-widgets, post-formats, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+*/
+
+
+.ant-notification {
+    z-index: 99999 !important;
+}
+
+.tabsSystem .tabs {
+  overflow-x: hidden;
+}
+
+.orderTables {
+  padding-bottom: 90px;
+}
+
+.orderInfo {
+  overflow-y: auto !important;
+}

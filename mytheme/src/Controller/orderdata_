@@ -1,0 +1,736 @@
+array (
+  'order_id' => 27621,
+  'address' => ' ',
+  'city' => '',
+  'name' => 'Keely ',
+  'phone' => '02102325532',
+  'total' => '45.00',
+  'price' => 0,
+  'date' => 
+  array (
+    'date' => '2024-07-13 19:13:25.000000',
+    'timezone_type' => 3,
+    'timezone' => 'Pacific/Auckland',
+  ),
+  'order' => 
+  array (
+    'id' => 27621,
+    'parent_id' => 0,
+    'status' => 'completed',
+    'currency' => 'NZD',
+    'version' => '9.0.2',
+    'prices_include_tax' => false,
+    'date_created' => 
+    array (
+      'date' => '2024-07-13 19:11:34.000000',
+      'timezone_type' => 3,
+      'timezone' => 'Pacific/Auckland',
+    ),
+    'date_modified' => 
+    array (
+      'date' => '2024-07-13 19:13:27.000000',
+      'timezone_type' => 3,
+      'timezone' => 'Pacific/Auckland',
+    ),
+    'discount_total' => '0',
+    'discount_tax' => '0',
+    'shipping_total' => '0',
+    'shipping_tax' => '0',
+    'cart_tax' => '0',
+    'total' => '45.00',
+    'total_tax' => '0',
+    'customer_id' => 0,
+    'order_key' => 'wc_order_8vIWbrWEF5y6F',
+    'billing' => 
+    array (
+      'first_name' => 'Keely',
+      'last_name' => '',
+      'company' => '',
+      'address_1' => '',
+      'address_2' => '',
+      'city' => '',
+      'state' => '',
+      'postcode' => '',
+      'country' => 'NZ',
+      'email' => 'keeltgager@hmail.com',
+      'phone' => '02102325532',
+    ),
+    'shipping' => 
+    array (
+      'first_name' => 'Keely',
+      'last_name' => '',
+      'company' => '',
+      'address_1' => '',
+      'address_2' => '',
+      'city' => '',
+      'state' => '',
+      'postcode' => '',
+      'country' => 'NZ',
+      'phone' => '',
+    ),
+    'payment_method' => 'windcave',
+    'payment_method_title' => 'Windcave Payment',
+    'transaction_id' => '0000000854856e88',
+    'customer_ip_address' => '49.224.204.238',
+    'customer_user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1',
+    'created_via' => 'checkout',
+    'customer_note' => '',
+    'date_completed' => 
+    array (
+      'date' => '2024-07-13 19:13:27.000000',
+      'timezone_type' => 3,
+      'timezone' => 'Pacific/Auckland',
+    ),
+    'date_paid' => 
+    array (
+      'date' => '2024-07-13 19:13:25.000000',
+      'timezone_type' => 3,
+      'timezone' => 'Pacific/Auckland',
+    ),
+    'cart_hash' => '52d18298229acd9ce0ce98fd79ae66a4',
+    'order_stock_reduced' => true,
+    'download_permissions_granted' => true,
+    'new_order_email_sent' => true,
+    'recorded_sales' => true,
+    'recorded_coupon_usage_counts' => true,
+    'number' => '27621',
+    'meta_data' => 
+    array (
+      0 => 
+      array (
+        'id' => 137713,
+        'key' => '_before_checkout_billing_form_pick_up_or_delivery',
+        'value' => 'pickup',
+      ),
+      1 => 
+      array (
+        'id' => 137714,
+        'key' => '_order_date',
+        'value' => '13.07.2024',
+      ),
+      2 => 
+      array (
+        'id' => 137715,
+        'key' => '_order_time',
+        'value' => '700',
+      ),
+      3 => 
+      array (
+        'id' => 137716,
+        'key' => '_order_please_tell_us_abo',
+        'value' => '',
+      ),
+      4 => 
+      array (
+        'id' => 137717,
+        'key' => 'logic_results_storage',
+        'value' => 
+        array (
+          'billing_address_1' => 
+          array (
+            'show' => false,
+          ),
+          'billing_city' => 
+          array (
+            'show' => false,
+          ),
+          'billing_postcode' => 
+          array (
+            'show' => false,
+          ),
+        ),
+      ),
+      5 => 
+      array (
+        'id' => 137718,
+        'key' => 'exwfood_order_method',
+        'value' => '',
+      ),
+      6 => 
+      array (
+        'id' => 137719,
+        'key' => '_wc_order_attribution_source_type',
+        'value' => 'organic',
+      ),
+      7 => 
+      array (
+        'id' => 137720,
+        'key' => '_wc_order_attribution_referrer',
+        'value' => 'https://www.google.co.nz/',
+      ),
+      8 => 
+      array (
+        'id' => 137721,
+        'key' => '_wc_order_attribution_utm_source',
+        'value' => 'google',
+      ),
+      9 => 
+      array (
+        'id' => 137722,
+        'key' => '_wc_order_attribution_utm_medium',
+        'value' => 'organic',
+      ),
+      10 => 
+      array (
+        'id' => 137723,
+        'key' => '_wc_order_attribution_session_entry',
+        'value' => 'https://xianfoods.co.nz/',
+      ),
+      11 => 
+      array (
+        'id' => 137724,
+        'key' => '_wc_order_attribution_session_start_time',
+        'value' => '2024-07-13 07:06:24',
+      ),
+      12 => 
+      array (
+        'id' => 137725,
+        'key' => '_wc_order_attribution_session_pages',
+        'value' => '3',
+      ),
+      13 => 
+      array (
+        'id' => 137726,
+        'key' => '_wc_order_attribution_session_count',
+        'value' => '1',
+      ),
+      14 => 
+      array (
+        'id' => 137727,
+        'key' => '_wc_order_attribution_user_agent',
+        'value' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1',
+      ),
+      15 => 
+      array (
+        'id' => 137728,
+        'key' => '_wc_order_attribution_device_type',
+        'value' => 'Mobile',
+      ),
+      16 => 
+      array (
+        'id' => 137729,
+        'key' => '_windcave_session_meta',
+        'value' => ',0,1',
+      ),
+      17 => 
+      array (
+        'id' => 137730,
+        'key' => '_windcave_session_id',
+        'value' => '0000080151063237084924d8808bd21d',
+      ),
+      18 => 
+      array (
+        'id' => 137731,
+        'key' => '_windcave_session_url',
+        'value' => 'https://sec.windcave.com/pxmi3/F788E5BDA50E317BB54B875CF22B228C90CCDE001B492EA3493CEACC7042FEE3FC940CD0D8A973F73AC137562195A27F8',
+      ),
+      19 => 
+      array (
+        'id' => 137732,
+        'key' => 'is_vat_exempt',
+        'value' => 'no',
+      ),
+      20 => 
+      array (
+        'id' => 137733,
+        'key' => '_wc_order_attribution_source_type',
+        'value' => 'organic',
+      ),
+      21 => 
+      array (
+        'id' => 137734,
+        'key' => '_wc_order_attribution_referrer',
+        'value' => 'https://www.google.co.nz/',
+      ),
+      22 => 
+      array (
+        'id' => 137735,
+        'key' => '_wc_order_attribution_utm_source',
+        'value' => 'google',
+      ),
+      23 => 
+      array (
+        'id' => 137736,
+        'key' => '_wc_order_attribution_utm_medium',
+        'value' => 'organic',
+      ),
+      24 => 
+      array (
+        'id' => 137737,
+        'key' => '_wc_order_attribution_session_entry',
+        'value' => 'https://xianfoods.co.nz/',
+      ),
+      25 => 
+      array (
+        'id' => 137738,
+        'key' => '_wc_order_attribution_session_start_time',
+        'value' => '2024-07-13 07:06:24',
+      ),
+      26 => 
+      array (
+        'id' => 137739,
+        'key' => '_wc_order_attribution_session_pages',
+        'value' => '4',
+      ),
+      27 => 
+      array (
+        'id' => 137740,
+        'key' => '_wc_order_attribution_session_count',
+        'value' => '1',
+      ),
+      28 => 
+      array (
+        'id' => 137741,
+        'key' => '_wc_order_attribution_user_agent',
+        'value' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1',
+      ),
+      29 => 
+      array (
+        'id' => 137742,
+        'key' => '_wc_order_attribution_device_type',
+        'value' => 'Mobile',
+      ),
+    ),
+    'line_items' => 
+    array (
+      6867 => 
+      array (
+        'legacy_values' => NULL,
+        'legacy_cart_item_key' => NULL,
+        'legacy_package_key' => NULL,
+      ),
+      6868 => 
+      array (
+        'legacy_values' => NULL,
+        'legacy_cart_item_key' => NULL,
+        'legacy_package_key' => NULL,
+      ),
+    ),
+    'tax_lines' => 
+    array (
+    ),
+    'shipping_lines' => 
+    array (
+    ),
+    'fee_lines' => 
+    array (
+    ),
+    'coupon_lines' => 
+    array (
+    ),
+  ),
+  'items' => 
+  array (
+    0 => 
+    array (
+      'id' => 6867,
+      'order_id' => 27621,
+      'name' => '37.腊汁肉干拌手扯面',
+      'product_id' => 24223,
+      'variation_id' => 0,
+      'quantity' => 2,
+      'tax_class' => '',
+      'subtotal' => '37',
+      'subtotal_tax' => '0',
+      'total' => '37',
+      'total_tax' => '0',
+      'taxes' => 
+      array (
+        'total' => 
+        array (
+        ),
+        'subtotal' => 
+        array (
+        ),
+      ),
+      'meta_data' => 
+      array (
+        0 => 
+        array (
+          'id' => 62951,
+          'key' => '38.加大Extra Large (+&#36;1.50)',
+          'value' => 'L',
+        ),
+        1 => 
+        array (
+          'id' => 62952,
+          'key' => '加菜，蛋，肉，面 Extras (+&#36;2.50)',
+          'value' => '130.加菜.../份Extra Vegs',
+        ),
+        2 => 
+        array (
+          'id' => 62953,
+          'key' => '_exoptions',
+          'value' => 
+          array (
+            0 => 
+            array (
+              'name' => '38.加大Extra Large',
+              'value' => 'L',
+              'type_of_price' => '',
+              'price' => 1.5,
+              '_type' => '',
+            ),
+            1 => 
+            array (
+              'name' => '加菜，蛋，肉，面 Extras',
+              'value' => '130.加菜.../份Extra Vegs',
+              'type_of_price' => '',
+              'price' => 2.5,
+              '_type' => '',
+            ),
+          ),
+        ),
+      ),
+    ),
+    1 => 
+    array (
+      'id' => 6868,
+      'order_id' => 27621,
+      'name' => '8. 孜然羊肉夹馍',
+      'product_id' => 25385,
+      'variation_id' => 0,
+      'quantity' => 1,
+      'tax_class' => '',
+      'subtotal' => '8',
+      'subtotal_tax' => '0',
+      'total' => '8',
+      'total_tax' => '0',
+      'taxes' => 
+      array (
+        'total' => 
+        array (
+        ),
+        'subtotal' => 
+        array (
+        ),
+      ),
+      'meta_data' => 
+      array (
+      ),
+    ),
+  ),
+  'extact' => '',
+  'subtotal' => 45,
+  'base_data' => 
+  array (
+    'id' => 27621,
+    'parent_id' => 0,
+    'status' => 'completed',
+    'currency' => 'NZD',
+    'version' => '9.0.2',
+    'prices_include_tax' => false,
+    'date_created' => 
+    array (
+      'date' => '2024-07-13 19:11:34.000000',
+      'timezone_type' => 3,
+      'timezone' => 'Pacific/Auckland',
+    ),
+    'date_modified' => 
+    array (
+      'date' => '2024-07-13 19:13:27.000000',
+      'timezone_type' => 3,
+      'timezone' => 'Pacific/Auckland',
+    ),
+    'discount_total' => '0',
+    'discount_tax' => '0',
+    'shipping_total' => '0',
+    'shipping_tax' => '0',
+    'cart_tax' => '0',
+    'total' => '45.00',
+    'total_tax' => '0',
+    'customer_id' => 0,
+    'order_key' => 'wc_order_8vIWbrWEF5y6F',
+    'billing' => 
+    array (
+      'first_name' => 'Keely',
+      'last_name' => '',
+      'company' => '',
+      'address_1' => '',
+      'address_2' => '',
+      'city' => '',
+      'state' => '',
+      'postcode' => '',
+      'country' => 'NZ',
+      'email' => 'keeltgager@hmail.com',
+      'phone' => '02102325532',
+    ),
+    'shipping' => 
+    array (
+      'first_name' => 'Keely',
+      'last_name' => '',
+      'company' => '',
+      'address_1' => '',
+      'address_2' => '',
+      'city' => '',
+      'state' => '',
+      'postcode' => '',
+      'country' => 'NZ',
+      'phone' => '',
+    ),
+    'payment_method' => 'windcave',
+    'payment_method_title' => 'Windcave Payment',
+    'transaction_id' => '0000000854856e88',
+    'customer_ip_address' => '49.224.204.238',
+    'customer_user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1',
+    'created_via' => 'checkout',
+    'customer_note' => '',
+    'date_completed' => 
+    array (
+      'date' => '2024-07-13 19:13:27.000000',
+      'timezone_type' => 3,
+      'timezone' => 'Pacific/Auckland',
+    ),
+    'date_paid' => 
+    array (
+      'date' => '2024-07-13 19:13:25.000000',
+      'timezone_type' => 3,
+      'timezone' => 'Pacific/Auckland',
+    ),
+    'cart_hash' => '52d18298229acd9ce0ce98fd79ae66a4',
+    'order_stock_reduced' => true,
+    'download_permissions_granted' => true,
+    'new_order_email_sent' => true,
+    'recorded_sales' => true,
+    'recorded_coupon_usage_counts' => true,
+    'number' => '27621',
+  ),
+  'meta_data' => 
+  array (
+    0 => 
+    array (
+      'id' => 137713,
+      'key' => '_before_checkout_billing_form_pick_up_or_delivery',
+      'value' => 'pickup',
+    ),
+    1 => 
+    array (
+      'id' => 137714,
+      'key' => '_order_date',
+      'value' => '13.07.2024',
+    ),
+    2 => 
+    array (
+      'id' => 137715,
+      'key' => '_order_time',
+      'value' => '700',
+    ),
+    3 => 
+    array (
+      'id' => 137716,
+      'key' => '_order_please_tell_us_abo',
+      'value' => '',
+    ),
+    4 => 
+    array (
+      'id' => 137717,
+      'key' => 'logic_results_storage',
+      'value' => 
+      array (
+        'billing_address_1' => 
+        array (
+          'show' => false,
+        ),
+        'billing_city' => 
+        array (
+          'show' => false,
+        ),
+        'billing_postcode' => 
+        array (
+          'show' => false,
+        ),
+      ),
+    ),
+    5 => 
+    array (
+      'id' => 137718,
+      'key' => 'exwfood_order_method',
+      'value' => '',
+    ),
+    6 => 
+    array (
+      'id' => 137719,
+      'key' => '_wc_order_attribution_source_type',
+      'value' => 'organic',
+    ),
+    7 => 
+    array (
+      'id' => 137720,
+      'key' => '_wc_order_attribution_referrer',
+      'value' => 'https://www.google.co.nz/',
+    ),
+    8 => 
+    array (
+      'id' => 137721,
+      'key' => '_wc_order_attribution_utm_source',
+      'value' => 'google',
+    ),
+    9 => 
+    array (
+      'id' => 137722,
+      'key' => '_wc_order_attribution_utm_medium',
+      'value' => 'organic',
+    ),
+    10 => 
+    array (
+      'id' => 137723,
+      'key' => '_wc_order_attribution_session_entry',
+      'value' => 'https://xianfoods.co.nz/',
+    ),
+    11 => 
+    array (
+      'id' => 137724,
+      'key' => '_wc_order_attribution_session_start_time',
+      'value' => '2024-07-13 07:06:24',
+    ),
+    12 => 
+    array (
+      'id' => 137725,
+      'key' => '_wc_order_attribution_session_pages',
+      'value' => '3',
+    ),
+    13 => 
+    array (
+      'id' => 137726,
+      'key' => '_wc_order_attribution_session_count',
+      'value' => '1',
+    ),
+    14 => 
+    array (
+      'id' => 137727,
+      'key' => '_wc_order_attribution_user_agent',
+      'value' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1',
+    ),
+    15 => 
+    array (
+      'id' => 137728,
+      'key' => '_wc_order_attribution_device_type',
+      'value' => 'Mobile',
+    ),
+    16 => 
+    array (
+      'id' => 137729,
+      'key' => '_windcave_session_meta',
+      'value' => ',0,1',
+    ),
+    17 => 
+    array (
+      'id' => 137730,
+      'key' => '_windcave_session_id',
+      'value' => '0000080151063237084924d8808bd21d',
+    ),
+    18 => 
+    array (
+      'id' => 137731,
+      'key' => '_windcave_session_url',
+      'value' => 'https://sec.windcave.com/pxmi3/F788E5BDA50E317BB54B875CF22B228C90CCDE001B492EA3493CEACC7042FEE3FC940CD0D8A973F73AC137562195A27F8',
+    ),
+    19 => 
+    array (
+      'id' => 137732,
+      'key' => 'is_vat_exempt',
+      'value' => 'no',
+    ),
+    20 => 
+    array (
+      'id' => 137733,
+      'key' => '_wc_order_attribution_source_type',
+      'value' => 'organic',
+    ),
+    21 => 
+    array (
+      'id' => 137734,
+      'key' => '_wc_order_attribution_referrer',
+      'value' => 'https://www.google.co.nz/',
+    ),
+    22 => 
+    array (
+      'id' => 137735,
+      'key' => '_wc_order_attribution_utm_source',
+      'value' => 'google',
+    ),
+    23 => 
+    array (
+      'id' => 137736,
+      'key' => '_wc_order_attribution_utm_medium',
+      'value' => 'organic',
+    ),
+    24 => 
+    array (
+      'id' => 137737,
+      'key' => '_wc_order_attribution_session_entry',
+      'value' => 'https://xianfoods.co.nz/',
+    ),
+    25 => 
+    array (
+      'id' => 137738,
+      'key' => '_wc_order_attribution_session_start_time',
+      'value' => '2024-07-13 07:06:24',
+    ),
+    26 => 
+    array (
+      'id' => 137739,
+      'key' => '_wc_order_attribution_session_pages',
+      'value' => '4',
+    ),
+    27 => 
+    array (
+      'id' => 137740,
+      'key' => '_wc_order_attribution_session_count',
+      'value' => '1',
+    ),
+    28 => 
+    array (
+      'id' => 137741,
+      'key' => '_wc_order_attribution_user_agent',
+      'value' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1',
+    ),
+    29 => 
+    array (
+      'id' => 137742,
+      'key' => '_wc_order_attribution_device_type',
+      'value' => 'Mobile',
+    ),
+  ),
+  'metas' => 
+  array (
+    '_before_checkout_billing_form_pick_up_or_delivery' => 'pickup',
+    '_order_date' => '13.07.2024',
+    '_order_time' => '700',
+    '_order_please_tell_us_abo' => '',
+    'logic_results_storage' => 
+    array (
+      'billing_address_1' => 
+      array (
+        'show' => false,
+      ),
+      'billing_city' => 
+      array (
+        'show' => false,
+      ),
+      'billing_postcode' => 
+      array (
+        'show' => false,
+      ),
+    ),
+    'exwfood_order_method' => '',
+    '_wc_order_attribution_source_type' => 'organic',
+    '_wc_order_attribution_referrer' => 'https://www.google.co.nz/',
+    '_wc_order_attribution_utm_source' => 'google',
+    '_wc_order_attribution_utm_medium' => 'organic',
+    '_wc_order_attribution_session_entry' => 'https://xianfoods.co.nz/',
+    '_wc_order_attribution_session_start_time' => '2024-07-13 07:06:24',
+    '_wc_order_attribution_session_pages' => '3',
+    '_wc_order_attribution_session_count' => '1',
+    '_wc_order_attribution_user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1',
+    '_wc_order_attribution_device_type' => 'Mobile',
+    '_windcave_session_meta' => ',0,1',
+    '_windcave_session_id' => '0000080151063237084924d8808bd21d',
+    '_windcave_session_url' => 'https://sec.windcave.com/pxmi3/F788E5BDA50E317BB54B875CF22B228C90CCDE001B492EA3493CEACC7042FEE3FC940CD0D8A973F73AC137562195A27F8',
+    'is_vat_exempt' => 'no',
+  ),
+  'expand' => 
+  array (
+  ),
+  'status' => 'completed',
+)

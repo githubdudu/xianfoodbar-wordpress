@@ -10,3 +10,65 @@ Setup a local dev environment for Xianfoodbar
 # TODO
 ## docker-compose.yml
 - [ ] Add `chmod 666` for `mytheme/src/logined` in the docker docker-compose.yml entrypoint so the file stays writable after container restarts
+
+
+# Online orders
+
+To test the Remote.php webhook flow without standing up WooCommerce, fire the webhook manually.
+
+## Basic order (no metadata)
+
+```bash
+curl -X POST http://localhost:8080/api/remote/getdata/123 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "phone": "021000000",
+    "name": "Test User",
+    "address": "123 Test St",
+    "total": "25.00",
+    "status": "processing",
+    "order": {
+      "customer_note": "",
+      "order_key": "wc_test",
+      "date_created": {"date": "'"$(date '+%Y-%m-%d %H:%M:%S')"'"}
+    },
+    "items": [{"product_id": 1, "quantity": 2, "subtotal": "25.00", "meta_data": []}],
+    "metas": {}
+  }'
+```
+
+## Delivery order with extras and pickup time
+
+```bash
+curl -s -X POST http://localhost:8080/api/remote/getdata/789 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "phone": "021000000",
+    "name": "Test User",
+    "address": "123 Test St",
+    "total": "25.00",
+    "status": "processing",
+    "order": {
+      "customer_note": "No spicy please",
+      "order_key": "wc_test_789",
+      "date_created": {"date": "'"$(date '+%Y-%m-%d %H:%M:%S')"'"}
+    },
+    "items": [
+      {
+        "product_id": 1,
+        "quantity": 2,
+        "subtotal": "25.00",
+        "meta_data": [
+          {"key": "Meat", "value": "Extra&#038;"},
+          {"key": "Vegs", "value": "No vegetables"}
+        ]
+      }
+    ],
+    "metas": {
+      "is_vat_exempt": "no",
+      "_before_checkout_billing_form_pick_up_or_delivery": "delivery",
+      "_order_date": "04.05.26",
+      "_order_estimated_delivery_time": "18.30"
+    }
+  }'
+```

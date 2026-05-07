@@ -113,6 +113,7 @@ class Remote extends Wordpress
       $order->pay_price = $all_price;
       $order->takeway_order = 'orderdata_' . $id;
       $order->is_takeway = 1;
+      // is_checked=0 order needs to be verified by human; is_checked=1 order will get into the kitchen system 
       $order->is_checked = 0;
       $order->desk_id = $desk->id;
 

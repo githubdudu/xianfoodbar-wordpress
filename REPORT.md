@@ -136,3 +136,69 @@ ORM: `dbout/wp-orm` (built on CakePHP query builder + Laravel pagination).
 **Weaknesses**: Security hardening needed before production use (sanitization, CSRF on all mutations), timezone bug, polling-based real-time is inefficient, hybrid WP+Symfony architecture creates maintenance complexity.
 
 This is a functional, feature-rich system well-suited for small-to-medium restaurants, but needs security and stability work before scaling or exposing publicly.
+
+# Detailed Topics
+
+## Symfony inside a WordPress Theme — General Architecture
+
+### The core idea
+
+WordPress and Symfony are two separate PHP frameworks with completely different request lifecycles. The pattern in this project makes them coexist by giving each framework its own entry point and responsibility:
+
+Browser
+  │
+  ├── /wp-admin/*, /?p=1, /blog/* ──→  WordPress (wp-load.php → template hierarchy)
+  │                                     handles pages, posts, users, WP hooks
+  │
+  └── /themes/mytheme/public/index.php → Symfony Kernel
+                                          handles API routes, controllers, services
+
+---
+### How each side works
+
+WordPress side (functions.php, templates)
+- WordPress loads normally — functions.php runs on every WP request.
+- WordPress manages its own DB ($wpdb), users, sessions, and the theme's HTML templates.
+- WordPress hooks (add_action, add_filter) are used for theme setup, DB table creation on activation, asset enqueueing, etc.
+
+Symfony side (public/index.php, src/)
+- public/index.php is the Symfony front controller — it boots the Symfony Kernel independently from WordPress.
+- Symfony handles its own request/response lifecycle: routing → controller → response.
+- Has its own DI container, services, forms, serializer, HTTP client, Twig, Monolog, etc.
+- Does not go through WordPress at all. WP is not loaded when Symfony handles a request.
+
+---
+### Why this works
+
+Both frameworks are just PHP. They don't conflict because:
+
+1. Separate entry points — the web server (Apache in this case) routes URLs to either WordPress (index.php at the root) or Symfony (/wp-content/themes/mytheme/public/index.php) based on URL path.
+2. Separate autoloaders — Symfony loads its own vendor/autoload.php inside the theme directory, completely independent of WordPress's class loading.
+3. Shared database — both can query the same MySQL database (WordPress via $wpdb, Symfony via its ORM/models), since they're just separate PHP processes hitting the same DB.
+
+---
+### What Symfony adds that WordPress lacks
+
+This architecture is typically used when WordPress is chosen for its CMS features (admin panel, content management, plugin ecosystem) but the custom application logic needs something more structured:
+
+┌────────────────────────────┬─────────────────────────────┬────────────────────────────────┐
+│            Need            │       WordPress alone       │          With Symfony          │
+├────────────────────────────┼─────────────────────────────┼────────────────────────────────┤
+│ Typed, testable services   │ Procedural functions        │ DI container, autowiring       │
+├────────────────────────────┼─────────────────────────────┼────────────────────────────────┤
+│ Form handling & validation │ Custom code                 │ symfony/form + constraints     │
+├────────────────────────────┼─────────────────────────────┼────────────────────────────────┤
+│ Structured HTTP API        │ add_action('rest_api_init') │ Full router + controllers      │
+├────────────────────────────┼─────────────────────────────┼────────────────────────────────┤
+│ Serialization              │ json_encode                 │ symfony/serializer             │
+├────────────────────────────┼─────────────────────────────┼────────────────────────────────┤
+│ Logging                    │ error_log()                 │ Monolog with channels/handlers │
+├────────────────────────────┼─────────────────────────────┼────────────────────────────────┤
+│ Templating                 │ PHP templates               │ Twig with inheritance          │
+└────────────────────────────┴─────────────────────────────┴────────────────────────────────┘
+
+---
+### The key trade-off
+Good: You get the full power of Symfony's ecosystem (DI, forms, serializer, HTTP client) for your custom app logic, while WordPress still handles auth, the admin UI, and content.
+
+Bad: You have two frameworks to maintain, two request lifecycles to reason about, and no shared state between them at runtime — a WP session is not a Symfony session, a WP user is not a Symfony security user, etc. Any data sharing between the two sides must go through the database or a shared cache.

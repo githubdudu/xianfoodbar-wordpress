@@ -7,11 +7,6 @@ Setup a local dev environment for Xianfoodbar
 4. Setup 固定链接设置 in WordPress admin panel. Choose 文章名 and save it.
 5. Navigate to the /adminpanel/login page and login with the restaurant admin account
 
-# TODO
-## docker-compose.yml
-- [ ] Add `chmod 666` for `mytheme/src/logined` in the docker docker-compose.yml entrypoint so the file stays writable after container restarts
-
-
 # Online orders
 
 To test the Remote.php webhook flow without standing up WooCommerce, fire the webhook manually.

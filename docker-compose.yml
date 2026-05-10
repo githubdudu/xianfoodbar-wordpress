@@ -45,10 +45,10 @@ services:
       bash -c "
         chmod -R 777 /var/www/html/wp-content/themes/mytheme/var &&
         chmod -R 777 /var/www/html/wp-content/themes/mytheme/public/build &&
+        mkdir -p /var/www/html/wp-content/themes/mytheme/public/upload &&
         chmod -R 777 /var/www/html/wp-content/themes/mytheme/public/upload &&
         chmod 777 /var/www/html/wp-content/themes/mytheme &&
         chmod 777 /var/www/html/wp-content/themes/mytheme/src &&
-        cd /var/www/html/wp-content/themes/mytheme && composer install --no-dev --no-interaction &&
         exec docker-entrypoint.sh apache2-foreground
       "
 

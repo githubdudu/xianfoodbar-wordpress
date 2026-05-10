@@ -1,4 +1,4 @@
-.PHONY: up down logs shell cache-clear ps perms db-shell
+.PHONY: up down logs shell cache-clear ps perms db-shell composer-install
 
 up:
 	docker compose up -d
@@ -32,3 +32,9 @@ cache-clear:
 
 db-shell:
 	docker compose exec db mysql -u wordpress -pwordpress wordpress
+
+composer-install:
+	docker compose exec wordpress bash -c "\
+		cd /var/www/html/wp-content/themes/mytheme && \
+		composer install --no-dev --no-interaction \
+	"

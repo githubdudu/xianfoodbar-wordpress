@@ -36,5 +36,5 @@ db-shell:
 composer-install:
 	docker compose exec wordpress bash -c "\
 		cd /var/www/html/wp-content/themes/mytheme && \
-		composer install --no-dev --no-interaction \
+		composer install --no-interaction \
 	"

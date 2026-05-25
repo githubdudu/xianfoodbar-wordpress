@@ -1,0 +1,27 @@
+.centerShow {
+    width: 100%;
+    height: 400px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    text-align: center;
+
+    .item {
+        margin: 25px;
+        color: rgb(92, 92, 92);
+        
+        > span {
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+
+        &:first-child {
+            margin-top: 0;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}

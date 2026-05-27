@@ -14,7 +14,7 @@ Encore
     .addEntry('admin-orderList', './admin/orderList.tsx')
     .addEntry('admin-cookadmin', './admin/menu_table.tsx')
 
-    .copyFiles({ from: './styles/images', to: 'images/[path][name].[ext]' })
+    .copyFiles({ from: './styles/images', to: '[path][name].[ext]' })
 
     .enableTypeScriptLoader()
     .enableReactPreset()

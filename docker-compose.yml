@@ -39,6 +39,7 @@ services:
       - ./mytheme:/var/www/html/wp-content/themes/mytheme
       - wp_core:/var/www/html
       - wp_uploads:/var/www/html/wp-content/uploads
+      - ./plugins:/var/www/html/wp-content/plugins
     # Runs as root: fixes write permissions on theme subdirs, then hands off to
     # the original WP entrypoint (which generates wp-config.php and starts Apache).
     entrypoint: >
@@ -49,6 +50,9 @@ services:
         chmod -R 777 /var/www/html/wp-content/themes/mytheme/public/upload &&
         chmod 777 /var/www/html/wp-content/themes/mytheme &&
         chmod 777 /var/www/html/wp-content/themes/mytheme/src &&
+        mkdir -p /var/www/html/wp-content/uploads &&
+        chown -R www-data:www-data /var/www/html/wp-content/uploads &&
+        chmod -R 755 /var/www/html/wp-content/uploads &&
         exec docker-entrypoint.sh apache2-foreground
       "
 

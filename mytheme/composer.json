@@ -88,6 +88,9 @@
     }
   },
   "require-dev": {
+    "phpunit/phpunit": "dev-renovate/8.5-github-actions",
+    "symfony/browser-kit": "6.0.*",
+    "symfony/css-selector": "6.0.*",
     "symfony/maker-bundle": "1.50.0"
   }
 }

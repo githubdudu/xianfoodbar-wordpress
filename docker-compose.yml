@@ -17,11 +17,7 @@ services:
       retries: 10
 
   wordpress:
-    build:
-      context: .
-      args:
-        VERSION: ${VERSION:-1.0.0}
-    image: xianfoodbar-wordpress:${VERSION:-1.0.0}
+    image: wordpress:php8.1-apache
     restart: unless-stopped
     depends_on:
       db:

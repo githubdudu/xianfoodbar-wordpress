@@ -6,6 +6,23 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RemotePhpTest extends WebTestCase
 {
+    /**
+     * Replace the $wpdb stub and reset the WP-ORM Database singleton so it
+     * picks up the new stub on the next query.
+     */
+    private function setupWpDb(array $nextResults = [], mixed $nextRow = null): void
+    {
+        $mock = new \wpdb();
+        $mock->nextResults = $nextResults;
+        $mock->nextRow = $nextRow;
+        $GLOBALS['wpdb'] = $mock;
+
+        $ref = new \ReflectionClass(\Dbout\WpOrm\Orm\Database::class);
+        $prop = $ref->getProperty('instance');
+        $prop->setAccessible(true);
+        $prop->setValue(null, null);
+    }
+
     public static $order_data = [
         'phone' => '18888888888',
         'name' => '测试订单name',
@@ -83,8 +100,28 @@ class RemotePhpTest extends WebTestCase
         $client->request('POST', '/api/remote/getdata/' . ORDER_ID, self::$order_data);
 
         $this->assertResponseStatusCodeSame(200, 'Response should be 200 for a stale order (older than 12 hours)');
-       
+
         $data = json_decode($client->getResponse()->getContent(), true);
         $this->assertSame(EMPTY_DATA, $data['message'], 'Response should be empty for a stale order (older than 12 hours)');
+    }
+
+    /**
+     * Test when an existing order already has status 2 (completed). Should return 200 with 'completed'.
+     */
+    public function testCompletedExistingOrder(): void
+    {
+        $this->setupWpDb(
+            nextResults: [(object)['order_status' => 2, 'takeway_order' => 'orderdata_123456']]
+        );
+
+        $client = static::createClient();
+        $orderData = self::$order_data;
+        $orderData['order']['date_created']['date'] = date('Y-m-d');
+
+        $client->request('POST', '/api/remote/getdata/123456', $orderData);
+
+        $this->assertResponseStatusCodeSame(200);
+        $data = json_decode($client->getResponse()->getContent(), true);
+        $this->assertSame('completed', $data['message']);
     }
 }

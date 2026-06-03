@@ -72,5 +72,19 @@ class RemotePhpTest extends WebTestCase
         $this->assertResponseStatusCodeSame(404, 'Response should be 404 when order data is empty');
     }
 
+    /**
+     * Test when stale order that is older than 12 hours. Should return 200.
+     */
+    public function testStaleOrder(): void
+    {
+        $client = static::createClient();
+        define('ORDER_ID', 123456);
+        define('EMPTY_DATA', '');
+        $client->request('POST', '/api/remote/getdata/' . ORDER_ID, self::$order_data);
 
+        $this->assertResponseStatusCodeSame(200, 'Response should be 200 for a stale order (older than 12 hours)');
+       
+        $data = json_decode($client->getResponse()->getContent(), true);
+        $this->assertSame(EMPTY_DATA, $data['message'], 'Response should be empty for a stale order (older than 12 hours)');
+    }
 }

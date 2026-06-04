@@ -21,7 +21,7 @@ class Remote extends Wordpress
     if (!$id) {
       return $this->sendJson("", 404);
     }
-    // sleep(1);
+
     $orderData = $this->request->request->all();
     if (empty($orderData)) {
       return $this->sendJson("", 404);
@@ -31,7 +31,6 @@ class Remote extends Wordpress
     $realname = $orderData['name'];
     $address = $orderData['address'];
     $note = $orderData['order']['customer_note'];
-    $orderkey = $orderData['order']['order_key'];
     $all_price = $orderData['total'];
     $menu_order = $orderData['items'];
     $date = $orderData['order']['date_created']['date'];
@@ -44,7 +43,6 @@ class Remote extends Wordpress
     }
 
     $is_new = true;
-    $is_update = false;
     $desk_id = $this->getOption('site_takeway_did', 0);
     $deskOrderCount = 0;
 
@@ -66,14 +64,14 @@ class Remote extends Wordpress
       $desk_id = $desk->id;
     }
 
-    $labels = [
-      'is_vat_exempt' => '免增值税',
-      '_order_date' => '提取（希望送达）订单日期',
-      '_order_time' => '提取（送达）订单时间',
-      '_before_checkout_billing_form_pick_up_or_delivery' => '自取还是送餐',
-    ];
-
-    // $order->order_status = 0;
+    /**
+     * Fields in metas
+     *
+     *  'is_vat_exempt' => '免增值税',
+     * '_order_date' => '提取（希望送达）订单日期',
+     * '_order_time' => '提取（送达）订单时间',
+     * '_before_checkout_billing_form_pick_up_or_delivery' => '自取还是送餐',
+     */
 
     switch ($status) {
       case 'trash':

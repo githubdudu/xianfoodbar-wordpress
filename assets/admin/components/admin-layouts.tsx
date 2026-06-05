@@ -197,6 +197,7 @@ export default function AdminLayouts(props: { children?: any }) {
           <Link to={item.url || root_url}>{item.menu_name}</Link>
         ),
         key: "drop_" + key++,
+        icon: <item.icon />,
       }));
       const baseMenus = [
         {

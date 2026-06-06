@@ -43,13 +43,18 @@ class Remote extends Wordpress
     $metas = $orderData['metas'];
     $status = $orderData['status'];
 
-    $time = strtotime($date);
-    if ($time < time() - 43200) {
-      return $this->sendJson('', 200);
-    }
 
     $is_new = true;
     $desk_id = $this->getOption('site_takeway_did', 0);
+
+    $result = $remoteOS->orderSync($orderData, $desk_id);
+
+    $response = match ($result) {
+      'skipped' => $this->sendJson('', 200),
+      'completed' => $this->sendJson('completed', 200),
+      default => $this->sendJson('', 200),
+    };
+
     $deskOrderCount = 0;
 
     $exists = Order::where('takeway_order', 'orderdata_' . $id)->first();

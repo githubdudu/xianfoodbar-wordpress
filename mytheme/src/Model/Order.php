@@ -167,7 +167,7 @@ class Order extends AbstractModel
    * @param int $id
    * @return Order|null
    */
-  public function getTakewayOrderById(int $id): ?Order
+  public static function getTakewayOrderById(int $id): ?Order
   {
     return Order::where('takeway_order', 'orderdata_' . $id)->first();
   }

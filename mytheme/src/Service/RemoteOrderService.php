@@ -46,6 +46,11 @@ class RemoteOrderService
       return 'completed';
     }
 
+    // If the order total cost is 0, skip the order
+    if ($orderData['total'] == 0) {
+      return 'skipped';
+    }
+
     return '';
   }
 

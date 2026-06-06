@@ -187,10 +187,6 @@ class Remote extends Wordpress
       }
     }
 
-    if ($order->pay_price == 0) {
-      return $this->sendJson('', 200);
-    }
-
     if ($is_new) {
       $res = $order->save();
       if ($res) {

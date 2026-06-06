@@ -70,56 +70,6 @@ class Remote extends Wordpress
      */
 
     if ($is_new) {
-      if (isset($metas['_order_date'])) {
-        $time = '';
-        if ($order->is_delivery == 0 && isset($metas['_order_time']) && !empty($metas['_order_time'])) {
-          if ($metas['_order_time'] > 1000) {
-            $time1 = mb_strcut($metas['_order_time'], 0, 2);
-            $time2 = mb_strcut($metas['_order_time'], 2, 2);
-
-            if ($time2 == '30') {
-              if ($time1 >= '12') {
-                $next_time1 = 1;
-              } else {
-                $next_time1 = (intval($time1) + 1);
-              }
-            } else {
-              $next_time1 = $time1;
-            }
-
-            $time = ($time1 == 12 ? 'PM ' : 'AM ') . $time1 . ':' . $time2 . ' - ' . ($next_time1 == 1 || $next_time1 == 12 ? 'PM ' : 'AM ') . $next_time1 . ':' . ($time2 == '00' ? '30' : '00');
-          } else {
-            $time1 = mb_strcut($metas['_order_time'], 0, 1);
-            $time2 = mb_strcut($metas['_order_time'], 1, 2);
-
-            if ($time2 == '30') {
-              $next_time1 = (intval($time1) + 1);
-            } else {
-              $next_time1 = $time1;
-            }
-
-            $time = 'PM ' . $time1 . ':' . $time2 . ' - PM ' . $next_time1 . ':' . ($time2 == '00' ? ($next_time1 == 9 ? '15' : '30') : '00');
-          }
-        } else {
-          if ($order->is_delivery == 1 && isset($metas['_order_estimated_delivery_time'])) {
-            if (!empty($metas['_order_estimated_delivery_time'])) {
-              list($time1, $time2) = explode('.', $metas['_order_estimated_delivery_time']);
-              $time = 'PM' . $time1 . ':' . $time2 . ' - ' . 'PM ' . (intval($time1) + 1) . ':' . $time2;
-            }
-          }
-        }
-
-        $date = new DateTime();
-        $year = date('y');
-        $day = date('d');
-        $month = date('m');
-        if (str_contains($metas['_order_date'], '.')) {
-          list($day, $month, $year) = explode('.', $metas['_order_date'], 3);
-        }
-
-        $date->setDate($year, $month, $day);
-        $order->delivery_order_date = $date->format('Y-m-d     ') . $time;
-      }
 
       $deskOrderCount = Order::where('desk_id', $desk->id)
         ->whereIn('order_status', [0, 1])

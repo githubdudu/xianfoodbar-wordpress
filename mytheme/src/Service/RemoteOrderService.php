@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Model\Order;
 use App\Model\Desk;
-use DateTime;
 
 
 
@@ -122,8 +121,29 @@ class RemoteOrderService
     if (isset($orderData['metas']['_before_checkout_billing_form_pick_up_or_delivery'])) {
       $order->is_delivery = $orderData['metas']['_before_checkout_billing_form_pick_up_or_delivery'] == 'delivery' ? 1 : 0;
     }
+
+    $order->delivery_order_date = $this->getOrderDeliveryTime($orderData['metas'], $order->is_delivery);
   }
 
+
+  /**
+   * Get the time slot of the order.
+   * 
+   * @param array $metas The meta data of the order
+   * @param int $is_delivery Whether the order is delivery or pickup, 0 is pickup, 1 is delivery
+   * @return string The date and the time slot of the order
+   */
+  public function getOrderDeliveryTime(array $metas, int $is_delivery): string
+  {
+    if (!isset($metas['_order_date'])) {
+      return '';
+    }
+
+    $time = OrderTimeSlotParser::formatOrderDeliveryTime($metas['_order_time'], $is_delivery);
+    $date = OrderTimeSlotParser::formatOrderDeliveryDate($metas['_order_date']);
+
+    return $date . '     ' . $time;
+  }
 
   /**
    * Check if the order is created within 12 hours

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Core\Controller\Wordpress;
+use App\Service\RemoteOrderService;
 use App\Model\Desk;
 use App\Model\Menu;
 use App\Model\Order;
@@ -16,17 +17,22 @@ class Remote extends Wordpress
 {
   #[Route('/api/remote/getdata', name: 'get_order_data_from_remote')]
   #[Route('/api/remote/getdata/{id}', name: 'get_order_data_from_remote2')]
-  public function getData(AdminMessage $message, ?int $id = null)
+  public function getData(AdminMessage $message, RemoteOrderService $remoteOS, ?int $id = null)
   {
+    // Request validation
+    // Validate the query parameter
     if (!$id) {
       return $this->sendJson("", 404);
     }
 
+    // Validate the request body
     $orderData = $this->request->request->all();
     if (empty($orderData)) {
       return $this->sendJson("", 404);
     }
-    file_put_contents(dirname(__DIR__, 2) . '/var/orderdata_' . date('YmdHis') . '.json', json_encode($orderData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    // Save the request body to a file
+    $remoteOS->saveOrderDataToFile($orderData);
+
     $phone = $orderData['phone'];
     $realname = $orderData['name'];
     $address = $orderData['address'];

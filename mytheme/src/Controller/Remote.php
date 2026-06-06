@@ -56,18 +56,7 @@ class Remote extends Wordpress
     };
 
     $deskOrderCount = 0;
-
-    $exists = Order::where('takeway_order', 'orderdata_' . $id)->first();
-    if ($exists) {
-      $is_new = false;
-      $order = $exists;
-      if ($order->order_status == 2) {
-        return $this->sendJson('completed', 200);
-      }
-    } else {
-      $order = new Order();
-    }
-
+    $order = new Order();
 
     $desk = Desk::find($desk_id);
     if ($desk) {

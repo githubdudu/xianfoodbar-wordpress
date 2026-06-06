@@ -159,4 +159,16 @@ class Order extends AbstractModel
   {
     $this->order_sn = 'od' . date('YmdHis') . rand(1111, 9999);
   }
+
+
+  /**
+   * Get the takeway order from the database by the order id
+   * 
+   * @param int $id
+   * @return Order|null
+   */
+  public function getTakewayOrderById(int $id): ?Order
+  {
+    return Order::where('takeway_order', 'orderdata_' . $id)->first();
+  }
 }

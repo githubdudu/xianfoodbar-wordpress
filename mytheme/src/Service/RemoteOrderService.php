@@ -19,8 +19,19 @@ class RemoteOrderService
     if (!$this->isWithin12hours($date)) {
       return 'skipped';
     }
+
+    // Check if the order already exists and is completed
+    $existedOrder = Order::getTakewayOrderById($orderData['order_id']);
+    if ($existedOrder && $existedOrder->order_status == self::$COMPLETED_STATUS) {
+      return 'completed';
+    }
+
+    $order = $existedOrder ?? new Order();
+    $is_new = $existedOrder ? false : true;
+
     return '';
   }
+
   /**
    * Write the contents of request to a file with the current date and time
    *

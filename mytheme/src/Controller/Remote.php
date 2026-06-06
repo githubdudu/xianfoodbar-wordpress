@@ -74,19 +74,6 @@ class Remote extends Wordpress
      */
 
     switch ($status) {
-      case 'trash':
-        if ($exists) {
-          $exists->is_delete = 1;
-          $exists->update();
-        }
-        return $this->sendJson('completed', 200);
-      case 'failed':
-      case 'cancelled':
-        if ($exists) {
-          $exists->is_cancel = 1;
-          $exists->update();
-        }
-        return $this->sendJson('completed', 200);
       case 'completed':
       case 'processing':
       default:

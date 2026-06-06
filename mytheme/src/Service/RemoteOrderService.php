@@ -28,6 +28,23 @@ class RemoteOrderService
 
     $order = $existedOrder ?? new Order();
     $is_new = $existedOrder ? false : true;
+    // Update the existed order according to the status
+    // If the coming order is in trash, mark the existed order as deleted
+    if (in_array($orderData['status'], ['trash'])) {
+      if (!$is_new) {
+        $order->is_delete = 1;
+        $order->update();
+      }
+      return 'completed';
+    }
+    // If the coming order is in failed or cancelled, mark the existed order as cancelled
+    if (in_array($orderData['status'], ['failed', 'cancelled'])) {
+      if (!$is_new) {
+        $order->is_cancel = 1;
+        $order->update();
+      }
+      return 'completed';
+    }
 
     return '';
   }

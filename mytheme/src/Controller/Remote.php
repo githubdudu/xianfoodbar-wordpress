@@ -70,39 +70,6 @@ class Remote extends Wordpress
      */
 
     if ($is_new) {
-
-      $deskOrderCount = Order::where('desk_id', $desk->id)
-        ->whereIn('order_status', [0, 1])
-        ->where('is_delete', 0)
-        ->where('is_cancel', 0)
-        ->count();
-
-      if ($deskOrderCount >= 1) {
-        $lastCount = Order::where('desk_id', $desk->id)
-          ->whereIn('order_status', [0, 1])
-          ->where('is_delete', 0)
-          ->where('is_cancel', 0)
-          ->where('is_pin', 1)
-          ->count();
-
-        if ($lastCount >= 1) {
-          $last = Order::query()
-            ->where('desk_id', $desk_id)
-            ->whereIn('order_status', [0, 1])
-            ->where('is_delete', 0)
-            ->where('is_pin', 1)
-            ->where('is_cancel', 0)
-            ->orderBy('pin_num', 'desc')
-            ->first();
-          $deskOrderCount = $last->pin_num + 1;
-        }
-
-        $order->is_pin = 1;
-        $order->pin_num = $deskOrderCount;
-      }
-    }
-
-    if ($is_new) {
       $res = $order->save();
       if ($res) {
 

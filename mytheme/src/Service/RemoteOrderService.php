@@ -123,6 +123,9 @@ class RemoteOrderService
     }
 
     $order->delivery_order_date = $this->getOrderDeliveryTime($orderData['metas'], $order->is_delivery);
+
+    $order->pin_num = $this->getPinNum($order->desk_id);
+    $order->is_pin = $order->pin_num > 0 ? 1 : 0;
   }
 
 
@@ -143,6 +146,27 @@ class RemoteOrderService
     $date = OrderTimeSlotParser::formatOrderDeliveryDate($metas['_order_date']);
 
     return $date . '     ' . $time;
+  }
+
+  /**
+   * 
+   */
+  public function getPinNum(int $desk_id) : int
+  {
+    $query = Order::active()
+      ->where('desk_id', $desk_id);
+
+    $deskOrderCount = $query->count();
+
+    if ($deskOrderCount > 0) {
+      $maxPinNum = $query
+        ->where('is_pin', 1)
+        ->max('pin_num');
+      
+      return $maxPinNum ? $maxPinNum + 1 : 1;
+    }
+
+    return 0;
   }
 
   /**

@@ -59,10 +59,6 @@ class Remote extends Wordpress
     $order = new Order();
 
     $desk = Desk::find($desk_id);
-    if ($desk) {
-      $desk = Desk::where('is_takeway', 1)->first();
-      $desk_id = $desk->id;
-    }
 
     /**
      * Fields in metas
@@ -73,38 +69,7 @@ class Remote extends Wordpress
      * '_before_checkout_billing_form_pick_up_or_delivery' => '自取还是送餐',
      */
 
-    switch ($status) {
-      case 'completed':
-      case 'processing':
-      default:
-        if ($is_new) {
-          $order->order_status = 1;
-          $order->pay_time = new \DateTime();
-        }
-        break;
-    }
-
     if ($is_new) {
-      $order->address = $address ?? $order->address;
-      $order->phone = $phone ?? $order->phone;
-      $order->realname = $realname ?? $order->realname;
-      $order->note = $note ?? $order->note;
-      $order->generateOrderSN();
-      $order->pay_price = $all_price;
-      $order->takeway_order = 'orderdata_' . $id;
-      $order->is_takeway = 1;
-      // is_checked=0 order needs to be verified by human; is_checked=1 order will get into the kitchen system 
-      $order->is_checked = 0;
-      $order->desk_id = $desk->id;
-
-      if (isset($metas['is_vat_exempt'])) {
-        $order->is_vat_exempt = $metas['is_vat_exempt'] == 'yes' ? 1 : 0;
-      }
-
-      if (isset($metas['_before_checkout_billing_form_pick_up_or_delivery'])) {
-        $order->is_delivery = $metas['_before_checkout_billing_form_pick_up_or_delivery'] == 'delivery' ? 1 : 0;
-      }
-
       if (isset($metas['_order_date'])) {
         $time = '';
         if ($order->is_delivery == 0 && isset($metas['_order_time']) && !empty($metas['_order_time'])) {

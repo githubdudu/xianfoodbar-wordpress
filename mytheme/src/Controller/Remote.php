@@ -33,15 +33,7 @@ class Remote extends Wordpress
     // Save the request body to a file
     $remoteOS->saveOrderDataToFile($orderData);
 
-    $phone = $orderData['phone'];
-    $realname = $orderData['name'];
-    $address = $orderData['address'];
-    $note = $orderData['order']['customer_note'];
-    $all_price = $orderData['total'];
     $menu_order = $orderData['items'];
-    $date = $orderData['order']['date_created']['date'];
-    $metas = $orderData['metas'];
-    $status = $orderData['status'];
 
 
     $is_new = true;
@@ -52,22 +44,16 @@ class Remote extends Wordpress
     $response = match ($result) {
       'skipped' => $this->sendJson('', 200),
       'completed' => $this->sendJson('completed', 200),
+      '更新完成' => $this->sendJson('更新完成', 200),
+      '添加失败' => $this->sendJson('添加失败', 500),
+      '创建完成' => $this->sendJson('创建完成', 200),
       default => $this->sendJson('', 200),
     };
 
-    $deskOrderCount = 0;
     $order = new Order();
 
     $desk = Desk::find($desk_id);
 
-    /**
-     * Fields in metas
-     *
-     *  'is_vat_exempt' => '免增值税',
-     * '_order_date' => '提取（希望送达）订单日期',
-     * '_order_time' => '提取（送达）订单时间',
-     * '_before_checkout_billing_form_pick_up_or_delivery' => '自取还是送餐',
-     */
 
     if ($is_new) {
       $res = $order->save();
@@ -80,11 +66,7 @@ class Remote extends Wordpress
           if (isset($data['product_id']) && !empty($data)) {
             $note = '';
             if (count($data['meta_data']) > 0) {
-              $extend = [
-                'Large' => '加大',
-                'Meat' => '加肉',
-                'Vegs' => '加菜',
-              ];
+
               foreach ($data['meta_data'] as $data2) {
                 if (is_string($data2['value'])) {
                   $value = explode('&#', html_entity_decode($data2['value'], ENT_HTML5));
@@ -135,10 +117,6 @@ class Remote extends Wordpress
         ]);
         return $this->sendJson('创建完成', 200);
       }
-    } else {
-      return $this->sendJson('更新完成', 200);
     }
-    //        file_put_contents(__DIR__ . '/error2', $orderModel->getLastSQL());
-    return $this->sendJson('添加失败', 500);
   }
 }

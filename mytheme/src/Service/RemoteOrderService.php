@@ -10,6 +10,7 @@ use App\Model\Desk;
 class RemoteOrderService
 {
   private static int $_12HOURS = 60 * 60 * 12;
+  private static int $COMPLETED_STATUS = 2;
 
   public function orderSync(array $orderData, int $desk_id): string
   {
@@ -50,6 +51,11 @@ class RemoteOrderService
       return 'skipped';
     }
 
+    // Return for existing order
+    if (!$is_new) {
+      return '更新完成';
+    }
+
     // There might be a wrong code which should be if(!$desk) instead of if($desk). So right not the if block is never executed. 
     $desk = Desk::find($desk_id);
     if ($desk) {
@@ -59,7 +65,18 @@ class RemoteOrderService
 
     $this->orderBuilder($orderData, $order, $is_new, $desk_id);
 
-    return '';
+    if (!$order->save()) {
+      return '添加失败';
+    }
+
+    $oid = $order->oid;
+
+    // build menu list
+    // save order details
+    // send notifications
+    // update desk
+
+    return '创建完成';
   }
 
   /**
@@ -85,7 +102,7 @@ class RemoteOrderService
    * 
    * @return void
    */
-  public function orderBuilder(array $orderData, Order $order, bool $is_new, int $desk_id = 0)
+  public function orderBuilder(array $orderData, Order $order, bool $is_new, int $desk_id = 0): void
   {
     if (!$is_new) {
       // do something for existed order if needed
@@ -151,7 +168,7 @@ class RemoteOrderService
   /**
    * 
    */
-  public function getPinNum(int $desk_id) : int
+  public function getPinNum(int $desk_id): int
   {
     $query = Order::active()
       ->where('desk_id', $desk_id);
@@ -162,7 +179,7 @@ class RemoteOrderService
       $maxPinNum = $query
         ->where('is_pin', 1)
         ->max('pin_num');
-      
+
       return $maxPinNum ? $maxPinNum + 1 : 1;
     }
 

@@ -2,12 +2,9 @@
 
 namespace App\Service;
 
-use App\Model\Desk;
 use App\Model\Menu;
 use App\Model\Order;
 use App\Model\OrderDetail;
-use App\Service\AdminMessage;
-use Symfony\Component\Routing\Annotation\Route;
 
 class RemoteOrderDetail
 {
@@ -25,19 +22,8 @@ class RemoteOrderDetail
   {
     foreach ($this->products as $product) {
       if (isset($product['product_id']) && !empty($product)) {
-        $note = '';
-        if (count($product['meta_data']) > 0) {
+        $note = $this->resolveNote($product);
 
-          foreach ($product['meta_data'] as $data2) {
-            if (is_string($data2['value'])) {
-              $value = explode('&#', html_entity_decode($data2['value'], ENT_HTML5));
-              if (count($value) <= 1) {
-                $value = explode('$', $data2['value']);
-              }
-              $note .= $data2['key'] . ' -> ' . trim($value[0], ' +') . "\n";
-            }
-          }
-        }
         $menuInfo = Menu::where('out_site_id', $product['product_id'])->first();
         if ($menuInfo) {
           $this->menuList[] = [
@@ -65,5 +51,54 @@ class RemoteOrderDetail
       $orderDetail->setPrice();
       $orderDetail->save();
     }
+  }
+
+  public function resolveNote(array $product): string
+  {
+    $note = '';
+
+    foreach (($product['meta_data'] ?? []) as $extra) {
+      /**
+      * The $extra['value'] can be a string or an array
+      *
+      *  "meta_data": [
+      *         {
+      *             "id": 83246,
+      *             "key": "302.加大Extra Large (+&#36;1.50)",
+      *             "value": "L"
+      *         },
+      *         {
+      *             "id": 83247,
+      *             "key": "_exoptions",
+      *             "value": [
+      *                 {
+      *                     "name": "302.加大Extra Large",
+      *                     "value": "L",
+      *                     "type_of_price": "",
+      *                     "price": 1.5,
+      *                     "_type": ""
+      *                 }
+      *             ]
+      *         }
+      *     ]
+      *  Examples return :
+      *     74.加大Extra Large (+&#36;4.00) -> L
+      *     加菜，蛋，肉，面 Extras (+&#36;2.50) -> 130.加菜.../份Extra Vegs
+      * 
+      *  Looks like the code is wrong. It should deal with $extra['key'] which contains the encoded
+      *  html code, instead of $extra['value']. 
+      *  So what we should have got $value to be the price
+      */ 
+      if (is_string($extra['value'])) {
+        $value = explode('&#', html_entity_decode($extra['value'], ENT_HTML5));
+
+        if (count($value) <= 1) {
+          $value = explode('$', $extra['value']);
+        }
+
+        $note .= $extra['key'] . ' -> ' . trim($value[0], ' +') . "\n";
+      }
+    }
+    return $note;
   }
 }

@@ -74,7 +74,7 @@ class RemoteOrderService
     }
 
     // build menu list and save order details (products in the order)
-    $orderDetailService = new RemoteOrderDetail($order, $orderData['items']);
+    $orderDetailService = new RemoteOrderDetail($order->oid, $orderData['items']);
     $orderDetailService->saveOrderDetails();
 
     return '创建完成';

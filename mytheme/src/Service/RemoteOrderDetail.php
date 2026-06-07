@@ -11,10 +11,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RemoteOrderDetail
 {
-  public static function saveOrderDetails(Order $order, array $products)
+  private Order $order;
+  private array $products;
+  private array $menuList = [];
+
+  public function __construct(Order $order, array $products)
   {
-    $menuList = [];
-    foreach ($products as $product) {
+    $this->order = $order;
+    $this->products = $products;
+  }
+
+  public function saveOrderDetails()
+  {
+    foreach ($this->products as $product) {
       if (isset($product['product_id']) && !empty($product)) {
         $note = '';
         if (count($product['meta_data']) > 0) {
@@ -31,8 +40,8 @@ class RemoteOrderDetail
         }
         $menuInfo = Menu::where('out_site_id', $product['product_id'])->first();
         if ($menuInfo) {
-          $menuList[] = [
-            'oid' => $order->oid,
+          $this->menuList[] = [
+            'oid' => $this->order->oid,
             'menu_id' => $menuInfo->id,
             'menu_name' => $menuInfo->menu_name,
             'total' => $product['quantity'],
@@ -44,7 +53,7 @@ class RemoteOrderDetail
       }
     }
 
-    foreach ($menuList as $product) {
+    foreach ($this->menuList as $product) {
       $orderDetail = new OrderDetail();
       $orderDetail->oid = $product['oid'];
       $orderDetail->menu_id = $product['menu_id'];

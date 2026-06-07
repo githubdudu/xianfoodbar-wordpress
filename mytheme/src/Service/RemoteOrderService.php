@@ -65,14 +65,17 @@ class RemoteOrderService
       $desk_id = $this->desk->id;
     }
 
+    // Build the order by orderBuilder function
     $this->orderBuilder($orderData, $order, $is_new, $desk_id);
 
+    // Save the order to database
     if (!$order->save()) {
       return '添加失败';
     }
 
-    // build menu list and save order details
-    RemoteOrderDetail::saveOrderDetails($order, $orderData['items']);
+    // build menu list and save order details (products in the order)
+    $orderDetailService = new RemoteOrderDetail($order, $orderData['items']);
+    $orderDetailService->saveOrderDetails();
 
     return '创建完成';
   }

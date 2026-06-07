@@ -4,14 +4,9 @@ namespace App\Controller;
 
 use App\Core\Controller\Wordpress;
 use App\Service\RemoteOrderService;
-use App\Model\Desk;
-use App\Model\Menu;
-use App\Model\Order;
-use App\Model\OrderDetail;
 use App\Service\AdminMessage;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use DateTime;
 
 class Remote extends Wordpress
 {
@@ -57,7 +52,7 @@ class Remote extends Wordpress
           musicFile: $this->getOption('takeway_type1_audio')
         );
 
-        // update desk status
+        // Update desk status
         if ($desk = $remoteOS->getDesk()) {
           $desk->use_status = 1;
           $desk->update();
@@ -71,7 +66,7 @@ class Remote extends Wordpress
         $response = $this->sendJson('创建完成', 200);
         break;
       default:
-        $response = $this->sendJson('', 200);
+        $response = $this->sendJson('unknown status', 200);
     }
     return $response;
   }

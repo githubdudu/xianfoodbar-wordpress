@@ -11,6 +11,8 @@ class RemoteOrderService
 {
   private static int $_12HOURS = 60 * 60 * 12;
   private static int $COMPLETED_STATUS = 2;
+  private int $order_sn;
+  private Desk $desk;
 
   public function orderSync(array $orderData, int $desk_id): string
   {
@@ -57,10 +59,10 @@ class RemoteOrderService
     }
 
     // There might be a wrong code which should be if(!$desk) instead of if($desk). So right not the if block is never executed. 
-    $desk = Desk::find($desk_id);
-    if ($desk) {
-      $desk = Desk::where('is_takeway', 1)->first();
-      $desk_id = $desk->id;
+    $this->desk = Desk::find($desk_id);
+    if (!$this->desk) {
+      $this->desk = Desk::where('is_takeway', 1)->first();
+      $desk_id = $this->desk->id;
     }
 
     $this->orderBuilder($orderData, $order, $is_new, $desk_id);
@@ -69,12 +71,8 @@ class RemoteOrderService
       return '添加失败';
     }
 
-    $oid = $order->oid;
-
-    // build menu list
-    // save order details
-    // send notifications
-    // update desk
+    // build menu list and save order details
+    RemoteOrderDetail::saveOrderDetails($order, $orderData['items']);
 
     return '创建完成';
   }
@@ -184,6 +182,16 @@ class RemoteOrderService
     }
 
     return 0;
+  }
+
+  public function getDesk(): Desk
+  {
+    return $this->desk;
+  }
+
+  public function getOrderSn(): int
+  {
+    return $this->order_sn;
   }
 
   /**

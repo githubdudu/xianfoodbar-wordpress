@@ -2,7 +2,10 @@
 
 namespace App\Tests\Controller;
 
+use Dbout\WpOrm\Orm\Database;
+use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use wpdb;
 
 class RemotePhpTest extends WebTestCase
 {
@@ -12,18 +15,20 @@ class RemotePhpTest extends WebTestCase
      */
     private function setupWpDb(array $nextResults = [], mixed $nextRow = null): void
     {
-        $mock = new \wpdb();
+        $mock = new wpdb();
         $mock->nextResults = $nextResults;
         $mock->nextRow = $nextRow;
         $GLOBALS['wpdb'] = $mock;
 
-        $ref = new \ReflectionClass(\Dbout\WpOrm\Orm\Database::class);
+        $ref = new ReflectionClass(Database::class);
         $prop = $ref->getProperty('instance');
-        $prop->setAccessible(true);
+        // In newer PHP versions (8.1+), ReflectionProperty::setAccessible() is effectively unnecessary for
+        // many reflection operations and has been deprecated in PHP 8.5.
+        // Reflection can already access private/protected properties in most cases.
         $prop->setValue(null, null);
     }
 
-    public static $order_data = [
+    public static array $order_data = [
         'order_id' => 123456,
         'phone' => '18888888888',
         'name' => '测试订单name',
@@ -67,6 +72,7 @@ class RemotePhpTest extends WebTestCase
         ],
         'status' => 'completed',
     ];
+
     /**
      * Test when no id is passed. Should return 404.
      */

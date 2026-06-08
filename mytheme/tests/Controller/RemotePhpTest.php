@@ -24,6 +24,7 @@ class RemotePhpTest extends WebTestCase
     }
 
     public static $order_data = [
+        'order_id' => 123456,
         'phone' => '18888888888',
         'name' => '测试订单name',
         'address' => '测试订单address',

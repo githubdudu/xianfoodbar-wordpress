@@ -6,11 +6,10 @@ use App\Model\Order;
 use App\Model\Desk;
 
 
-
 class RemoteOrderService
 {
-  private static int $_12HOURS = 60 * 60 * 12;
-  private static int $COMPLETED_STATUS = 2;
+  public static int $_12HOURS = 60 * 60 * 12;
+  public static int $COMPLETED_STATUS = 2;
   private int $order_sn;
   private Desk $desk;
 
@@ -23,6 +22,7 @@ class RemoteOrderService
     }
 
     // Check if the order already exists and is completed
+    // getTakewayOrderById uses field 'takeway_order' to search for pattern 'orderdata_{order_id}'
     $existedOrder = Order::getTakewayOrderById($orderData['order_id']);
     if ($existedOrder && $existedOrder->order_status == self::$COMPLETED_STATUS) {
       return 'completed';
@@ -73,6 +73,9 @@ class RemoteOrderService
       return '添加失败';
     }
 
+    // Set the order_sn for response data
+    $this->order_sn = $order->order_sn;
+
     // build menu list and save order details (products in the order)
     $orderDetailService = new RemoteOrderDetail($order->oid, $orderData['items']);
     $orderDetailService->saveOrderDetails();
@@ -83,24 +86,25 @@ class RemoteOrderService
   /**
    * Write the contents of request to a file with the current date and time
    *
-   * @param    array  $orderData  The contents of the request
+   * @param array $orderData The contents of the request
    *
    * @return   null
    *
    */
-  public function saveOrderDataToFile($orderData)
+  public function saveOrderDataToFile(array $orderData)
   {
     file_put_contents(dirname(__DIR__, 2) . '/var/orderdata_' . date('YmdHis') . '.json', json_encode($orderData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    return null;
   }
 
   /**
    * Set up phone, realname, address, note
-   * 
+   *
    * @param array $orderData
    * @param Order $order
    * @param bool $is_new
    * @param int $desk_id
-   * 
+   *
    * @return void
    */
   public function orderBuilder(array $orderData, Order $order, bool $is_new, int $desk_id = 0): void
@@ -150,7 +154,7 @@ class RemoteOrderService
   /**
    * Get the expected datetime of the order.
    * There are two cases. One is expected pick up time, another is expected delivery time.
-   * 
+   *
    * @param array $metas The metadata of the order
    * @param int $is_delivery Whether the order is delivery or pickup, 0 is pickup, 1 is delivery
    * @return string The date and the time slot of the order
@@ -162,15 +166,15 @@ class RemoteOrderService
     }
 
     $time = $is_delivery
-        ? OrderTimeSlotParser::formatOrderExpectedDeliveryTime($metas['_order_estimated_delivery_time'])
-        : OrderTimeSlotParser::formatOrderExpectedPickUpTime($metas['_order_time']);
+      ? OrderTimeSlotParser::formatOrderExpectedDeliveryTime($metas['_order_estimated_delivery_time'])
+      : OrderTimeSlotParser::formatOrderExpectedPickUpTime($metas['_order_time']);
     $date = OrderTimeSlotParser::formatOrderExpectedDate($metas['_order_date']);
 
     return $date . '     ' . $time;
   }
 
   /**
-   * 
+   *
    */
   public function getPinNum(int $desk_id): int
   {
@@ -202,7 +206,7 @@ class RemoteOrderService
 
   /**
    * Check if the order is created within 12 hours
-   * 
+   *
    * @param string $date
    * @return bool
    */

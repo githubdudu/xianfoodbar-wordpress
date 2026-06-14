@@ -140,7 +140,7 @@ class RemoteOrderService
       $order->is_delivery = $orderData['metas']['_before_checkout_billing_form_pick_up_or_delivery'] == 'delivery' ? 1 : 0;
     }
 
-    $order->delivery_order_date = $this->getOrderDeliveryTime($orderData['metas'], $order->is_delivery);
+    $order->delivery_order_date = $this->getOrderExpectDateTime($orderData['metas'], $order->is_delivery);
 
     $order->pin_num = $this->getPinNum($order->desk_id);
     $order->is_pin = $order->pin_num > 0 ? 1 : 0;
@@ -148,20 +148,23 @@ class RemoteOrderService
 
 
   /**
-   * Get the time slot of the order.
+   * Get the expected datetime of the order.
+   * There are two cases. One is expected pick up time, another is expected delivery time.
    * 
-   * @param array $metas The meta data of the order
+   * @param array $metas The metadata of the order
    * @param int $is_delivery Whether the order is delivery or pickup, 0 is pickup, 1 is delivery
    * @return string The date and the time slot of the order
    */
-  public function getOrderDeliveryTime(array $metas, int $is_delivery): string
+  public function getOrderExpectDateTime(array $metas, int $is_delivery): string
   {
     if (!isset($metas['_order_date'])) {
       return '';
     }
 
-    $time = OrderTimeSlotParser::formatOrderDeliveryTime($metas['_order_time'], $is_delivery);
-    $date = OrderTimeSlotParser::formatOrderDeliveryDate($metas['_order_date']);
+    $time = $is_delivery
+        ? OrderTimeSlotParser::formatOrderExpectedDeliveryTime($metas['_order_estimated_delivery_time'])
+        : OrderTimeSlotParser::formatOrderExpectedPickUpTime($metas['_order_time']);
+    $date = OrderTimeSlotParser::formatOrderExpectedDate($metas['_order_date']);
 
     return $date . '     ' . $time;
   }

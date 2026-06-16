@@ -28,6 +28,9 @@ class RemotePhpTest extends WebTestCase
         $prop->setValue(null, null);
     }
 
+  /**
+   * @var array should be the same format as the docs/wooCommerceOrderSample.json
+   */
     public static array $order_data = [
         'order_id' => 123456,
         'phone' => '18888888888',
@@ -37,8 +40,9 @@ class RemotePhpTest extends WebTestCase
             'customer_note' => '测试订单',
             'order_key' => '20230512123456',
             'date_created' => [
-                'date' => '2023-05-12',
-                'time' => '12:34:56',
+                'date' => '2023-05-12 12:34:56.000000', // should be format "2025-12-04 19:18:46.000000",
+                "timezone_type" => 3,
+                "timezone" => "Pacific\/Auckland",
             ],
             'status' => 'completed',
         ],
@@ -65,8 +69,8 @@ class RemotePhpTest extends WebTestCase
             ],
         ],
         'metas' => [
-            '_order_date' => '2023-05-12',
-            '_order_time' => '12:34:56',
+            '_order_date' => '04.12.2025',
+            '_order_time' => '730',
             '_before_checkout_billing_form_pick_up_or_delivery' => 'delivery',
             'is_vat_exempt' => 'yes',
         ],

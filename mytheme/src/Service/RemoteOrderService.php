@@ -16,8 +16,8 @@ class RemoteOrderService
   public function orderSync(array $orderData, int $desk_id): string
   {
     // Check if the order is created within 12 hours
-    $date = $orderData['order']['date_created']['date'];
-    if (!$this->isWithin12hours($date)) {
+    $date_created = $orderData['order']['date_created'];
+    if (!$this->isWithin12hours($date_created)) {
       return 'skipped';
     }
 
@@ -207,13 +207,22 @@ class RemoteOrderService
   /**
    * Check if the order is created within 12 hours
    *
-   * @param string $date
+   * @param array{date: string, timezone: string, timezone_type: int} $date_created
+   *
    * @return bool
    */
-  private function isWithin12hours(string $date): bool
+  private function isWithin12hours(array $date_created): bool
   {
-    $time = strtotime($date);
+    $tz = new \DateTimeZone($date_created['timezone'] ?? 'Pacific/Auckland');
+    $dt = \DateTime::createFromFormat('Y-m-d H:i:s.u', $date_created['date'], $tz);
 
-    return $time >= time() - self::$_12HOURS;
+    if (!$dt) {
+      // fallback
+      $dt = \DateTime::createFromFormat('Y-m-d H:i:s', $date_created['date'], $tz);
+    }
+    $time = $dt->getTimestamp(); // UTC-normalised Unix timestamp
+
+    $currentTime = time() - self::$_12HOURS;
+    return $time >= $currentTime;
   }
 }

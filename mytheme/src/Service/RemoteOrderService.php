@@ -18,14 +18,14 @@ class RemoteOrderService
     // Check if the order is created within 12 hours
     $date_created = $orderData['order']['date_created'];
     if (!$this->isWithin12hours($date_created)) {
-      return 'skipped';
+      return 'skipped-stale';
     }
 
     // Check if the order already exists and is completed
     // getTakewayOrderById uses field 'takeway_order' to search for pattern 'orderdata_{order_id}'
     $existedOrder = Order::getTakewayOrderById($orderData['order_id']);
     if ($existedOrder && $existedOrder->order_status == self::$COMPLETED_STATUS) {
-      return 'completed';
+      return 'completed-existed';
     }
 
     $order = $existedOrder ?? new Order();
@@ -37,7 +37,7 @@ class RemoteOrderService
         $order->is_delete = 1;
         $order->update();
       }
-      return 'completed';
+      return 'completed-trash';
     }
     // If the coming order is in failed or cancelled, mark the existed order as cancelled
     if (in_array($orderData['status'], ['failed', 'cancelled'])) {
@@ -45,12 +45,12 @@ class RemoteOrderService
         $order->is_cancel = 1;
         $order->update();
       }
-      return 'completed';
+      return 'completed-failed-cancelled';
     }
 
     // If the order total cost is 0, skip the order
     if ($orderData['total'] == 0) {
-      return 'skipped';
+      return 'skipped-no-total-cost';
     }
 
     // Return for existing order

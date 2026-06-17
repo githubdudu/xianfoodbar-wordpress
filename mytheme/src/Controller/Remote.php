@@ -33,10 +33,13 @@ class Remote extends Wordpress
     $result = $remoteOS->orderSync($orderData, $desk_id);
 
     switch ($result) {
-      case 'skipped':
+      case 'skipped-stale':
+      case 'skipped-no-total-cost':
         $response = $this->sendJson('', 200);
         break;
-      case 'completed':
+      case 'completed-existed':
+      case 'completed-trash':
+      case 'completed-failed-cancelled':
         $response = $this->sendJson('completed', 200);
         break;
       case '更新完成':

@@ -30,7 +30,10 @@ class RemoteOrderServiceTest extends TestCase
 
     $this->existedOrder = new Order();
     $this->existedOrder->oid = 123;
-    $this->existedOrder->order_status = 2;
+    $this->existedOrder->order_status = 1;
+    $this->existedOrder->is_delete = 0;
+    $this->existedOrder->is_cancel = 0;
+    $this->existedOrder->takeway_order = 'orderdata_123456';
   }
 
 
@@ -58,7 +61,7 @@ class RemoteOrderServiceTest extends TestCase
     // Orders created more than 12 hours ago should return 'skipped'
     $this->orderData['order']['date_created']['date'] = (new DateTime('-12hours -1second', new \DateTimeZone('Pacific/Auckland')))
       ->format('Y-m-d H:i:s.u');
-    $this->assertSame('skipped', (new RemoteOrderService())->orderSync($this->orderData, 1));
+    $this->assertSame('skipped-stale', (new RemoteOrderService())->orderSync($this->orderData, 1));
   }
 
   public function testOrderSync_Completed()
@@ -72,8 +75,69 @@ class RemoteOrderServiceTest extends TestCase
       'order_status' => RemoteOrderService::$COMPLETED_STATUS,
       'takeway_order' => 'orderdata_123456' // getById uses 'takeway_order' to search for pattern 'orderdata_{order_id}'
     ]]);
-    $this->assertNotSame('skipped', (new RemoteOrderService())->orderSync($this->orderData, 1));
-    $this->assertSame('completed', (new RemoteOrderService())->orderSync($this->orderData, 1));
+    $this->assertNotSame('skipped-stale', (new RemoteOrderService())->orderSync($this->orderData, 1));
+    $this->assertSame('completed-existed', (new RemoteOrderService())->orderSync($this->orderData, 1));
+  }
+
+  public function testOrderSync_trash()
+  {
+    // the order placed one hour ago but is marked as deleted should return 'trash'
+    $this->orderData['order']['date_created']['date'] = (new DateTime('-1 hours', new \DateTimeZone('Pacific/Auckland')))
+      ->format('Y-m-d H:i:s.u');
+    $this->orderData['order_id'] = 123456;
+
+    // If the coming order is in trash, mark the existed order as deleted
+    $this->orderData['status'] = 'trash';
+    $this->setupWpDb(nextResults: [$this->existedOrder]);
+    $this->assertSame('completed-trash', (new RemoteOrderService())->orderSync($this->orderData, 1));
+  }
+
+  public function testOrderSync_cancel()
+  {
+    // If the coming order is in failed or cancelled, mark the existed order as cancelled
+    $this->orderData['order']['date_created']['date'] = (new DateTime('-1 hours', new \DateTimeZone('Pacific/Auckland')))
+      ->format('Y-m-d H:i:s.u');
+    $this->orderData['order_id'] = 123456;
+
+    $this->orderData['status'] = 'failed';
+    $this->setupWpDb(nextResults: [$this->existedOrder]);
+    $this->assertSame('completed-failed-cancelled', (new RemoteOrderService())->orderSync($this->orderData, 1));
+  }
+
+  public function testOrderSync_failed()
+  {
+    // If the coming order is in failed or cancelled, mark the existed order as cancelled
+    $this->orderData['order']['date_created']['date'] = (new DateTime('-1 hours', new \DateTimeZone('Pacific/Auckland')))
+      ->format('Y-m-d H:i:s.u');
+    $this->orderData['order_id'] = 123456;
+
+    $this->orderData['status'] = 'cancelled';
+    $this->setupWpDb(nextResults: [$this->existedOrder]);
+    $this->assertSame('completed-failed-cancelled', (new RemoteOrderService())->orderSync($this->orderData, 1));
+  }
+
+  public function testOrderSync_zeroTotal()
+  {
+    // Orders with zero total should return 'skipped'
+    $this->orderData['order']['date_created']['date'] = (new DateTime('-1 hours', new \DateTimeZone('Pacific/Auckland')))
+      ->format('Y-m-d H:i:s.u');
+    $this->orderData['order_id'] = 123456;
+    $this->orderData['status'] = 'completed';
+
+    $this->setupWpDb(nextResults: [$this->existedOrder]);
+    $this->orderData['total'] = 0;
+    $this->assertSame('skipped-no-total-cost', (new RemoteOrderService())->orderSync($this->orderData, 1));
+  }
+
+  public function testOrderSync_return()
+  {
+    // Return for existing order if all cases above are not hit
+    $this->orderData['order']['date_created']['date'] = (new DateTime('-1 hours', new \DateTimeZone('Pacific/Auckland')))
+      ->format('Y-m-d H:i:s.u');
+    $this->orderData['order_id'] = 123456;
+    $this->orderData['status'] = 'completed';
+    $this->setupWpDb(nextResults: [$this->existedOrder]);
+    $this->assertSame('更新完成', (new RemoteOrderService())->orderSync($this->orderData, 1));
   }
 
   public function testSaveOrderDataToFile()

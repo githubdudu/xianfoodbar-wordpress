@@ -20,12 +20,25 @@ class RemoteOrderServiceTest extends TestCase
     $this->orderData = [
       'order_id' => 123,
       'order' => [
+        'customer_note' => '测试订单',
+        'order_key' => '20230512123456',
         'date_created' => [
-          'date' => '2024-06-01 12:00:00'
+          'date' => '2024-06-01 12:00:00.000000',
+          'timezone_type' => 3,
+          'timezone' => 'Pacific/Auckland',
         ]
       ],
       'status' => 'completed',
-      'total' => 100
+      'total' => 100,
+      'phone' => '18888888888',
+      'name' => '测试订单name',
+      'address' => '测试订单address',
+      'metas' => [
+        '_order_date' => '04.12.2025',
+        '_order_time' => '730',
+        '_before_checkout_billing_form_pick_up_or_delivery' => 'delivery',
+        'is_vat_exempt' => 'yes',
+      ],
     ];
 
     $this->existedOrder = new Order();
@@ -142,7 +155,34 @@ class RemoteOrderServiceTest extends TestCase
 
   public function testSaveOrderDataToFile()
   {
+    // Test function saveOrderDataToFile(array $orderData)
+    $service = new RemoteOrderService();
 
+    $before = time();
+    $result = $service->saveOrderDataToFile($this->orderData);
+
+    // Should always return null
+    $this->assertNotFalse($result);
+
+    // The file is written to <project_root>/var/orderdata_YmdHis.json
+    // dirname(__DIR__, 2) from src/Service/ resolves to the mytheme root
+    $varDir = dirname(__DIR__, 2) . '/var';
+    $pattern = $varDir . '/orderdata_*.json';
+
+    // Find files created at or after $before
+    $files = array_filter(glob($pattern), fn($f) => filemtime($f) >= $before);
+    $this->assertNotEmpty($files, 'Expected a new orderdata file to be created in var/');
+
+    // Pick the most recently modified file
+    usort($files, fn($a, $b) => filemtime($b) - filemtime($a));
+    $createdFile = $files[0];
+
+    // Verify content matches the encoded order data
+    $expected = json_encode($this->orderData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    $this->assertSame($expected, file_get_contents($createdFile));
+
+    // Clean up
+    unlink($createdFile);
   }
 
   public function testOrderBuilder()
@@ -168,5 +208,50 @@ class RemoteOrderServiceTest extends TestCase
   public function testGetOrderExpectDateTime()
   {
 
+  }
+
+  public function testisWithin12hours()
+  {
+    $removeOrderService = new RemoteOrderService();
+
+    $date_created = [
+      'date' => (new DateTime('-12 hours -1 second', new \DateTimeZone('Pacific/Auckland')))->format('Y-m-d H:i:s.u'),
+      'timezone_type' => 3,
+      'timezone' => 'Pacific/Auckland',
+    ];
+    $result = $removeOrderService->isWithin12hours($date_created);
+    $this->assertFalse($result);
+
+    $date_created = [
+      'date' => (new DateTime('-100 days', new \DateTimeZone('Pacific/Auckland')))->format('Y-m-d H:i:s.u'),
+      'timezone_type' => 3,
+      'timezone' => 'Pacific/Auckland',
+    ];
+    $result = $removeOrderService->isWithin12hours($date_created);
+    $this->assertFalse($result);
+
+    $date_created = [
+      'date' => (new DateTime('-12 hours +1 second', new \DateTimeZone('Pacific/Auckland')))->format('Y-m-d H:i:s.u'),
+      'timezone_type' => 3,
+      'timezone' => 'Pacific/Auckland',
+    ];
+    $result = $removeOrderService->isWithin12hours($date_created);
+    $this->assertTrue($result);
+
+    $date_created = [
+      'date' => (new DateTime('-1 second', new \DateTimeZone('Pacific/Auckland')))->format('Y-m-d H:i:s.u'),
+      'timezone_type' => 3,
+      'timezone' => 'Pacific/Auckland',
+    ];
+    $result = $removeOrderService->isWithin12hours($date_created);
+    $this->assertTrue($result);
+
+    $date_created = [
+      'date' => (new DateTime('+1 hour', new \DateTimeZone('Pacific/Auckland')))->format('Y-m-d H:i:s.u'),
+      'timezone_type' => 3,
+      'timezone' => 'Pacific/Auckland',
+    ];
+    $result = $removeOrderService->isWithin12hours($date_created);
+    $this->assertTrue($result);
   }
 }

@@ -88,13 +88,13 @@ class RemoteOrderService
    *
    * @param array $orderData The contents of the request
    *
-   * @return   null
+   * @return   false | int
    *
    */
-  public function saveOrderDataToFile(array $orderData)
+  public function saveOrderDataToFile(array $orderData): false | int
   {
-    file_put_contents(dirname(__DIR__, 2) . '/var/orderdata_' . date('YmdHis') . '.json', json_encode($orderData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-    return null;
+    $result = file_put_contents(dirname(__DIR__, 2) . '/var/orderdata_' . date('YmdHis') . '.json', json_encode($orderData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    return $result;
   }
 
   /**
@@ -211,7 +211,7 @@ class RemoteOrderService
    *
    * @return bool
    */
-  private function isWithin12hours(array $date_created): bool
+  public function isWithin12hours(array $date_created): bool
   {
     $tz = new \DateTimeZone($date_created['timezone'] ?? 'Pacific/Auckland');
     $dt = \DateTime::createFromFormat('Y-m-d H:i:s.u', $date_created['date'], $tz);

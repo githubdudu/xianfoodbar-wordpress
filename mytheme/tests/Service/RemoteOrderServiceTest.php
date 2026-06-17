@@ -2,6 +2,7 @@
 
 namespace App\Tests\Service;
 
+use App\Core\DateTime;
 use App\Model\Order;
 use App\Service\RemoteOrderService;
 use Dbout\WpOrm\Orm\Database;
@@ -52,20 +53,26 @@ class RemoteOrderServiceTest extends TestCase
     $prop->setValue(null, null);
   }
 
-  public function testOrderSync()
+  public function testOrderSync_skip()
   {
     // Orders created more than 12 hours ago should return 'skipped'
-    $this->orderData['order']['date_created']['date'] = date('Y-m-d H:i:s', time() - (RemoteOrderService::$_12HOURS + 1));
+    $this->orderData['order']['date_created']['date'] = (new DateTime('-12hours -1second', new \DateTimeZone('Pacific/Auckland')))
+      ->format('Y-m-d H:i:s.u');
     $this->assertSame('skipped', (new RemoteOrderService())->orderSync($this->orderData, 1));
+  }
 
+  public function testOrderSync_Completed()
+  {
     // the order already exists and is completed should return 'completed'
-    $this->orderData['order']['date_created']['date'] = date('Y-m-d H:i:s');
+    $this->orderData['order']['date_created']['date'] = (new DateTime('-12 hours +1 second', new \DateTimeZone('Pacific/Auckland')))
+      ->format('Y-m-d H:i:s.u');
     $this->orderData['order_id'] = 123456;
     // mock to return an order with completed status
     $this->setupWpDb(nextResults: [(object)[
       'order_status' => RemoteOrderService::$COMPLETED_STATUS,
       'takeway_order' => 'orderdata_123456' // getById uses 'takeway_order' to search for pattern 'orderdata_{order_id}'
     ]]);
+    $this->assertNotSame('skipped', (new RemoteOrderService())->orderSync($this->orderData, 1));
     $this->assertSame('completed', (new RemoteOrderService())->orderSync($this->orderData, 1));
   }
 

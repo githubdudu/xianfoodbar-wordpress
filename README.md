@@ -17,6 +17,7 @@ To test the Remote.php webhook flow without standing up WooCommerce, fire the we
 curl -X POST http://localhost:8080/api/remote/getdata/123 \
   -H "Content-Type: application/json" \
   -d '{
+    "order_id": 123,
     "phone": "021000000",
     "name": "Test User",
     "address": "123 Test St",

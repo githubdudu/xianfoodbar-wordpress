@@ -11,7 +11,7 @@ class RemoteOrderService
   public static int $_12HOURS = 60 * 60 * 12;
   public static int $COMPLETED_STATUS = 2;
   private int $order_sn;
-  private Desk $desk;
+  private ?Desk $desk;
 
   public function orderSync(array $orderData, int $desk_id): string
   {

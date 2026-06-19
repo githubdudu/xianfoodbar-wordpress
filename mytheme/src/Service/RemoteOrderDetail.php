@@ -38,14 +38,14 @@ class RemoteOrderDetail
 
       $orderDetail = new OrderDetail();
 
-      $orderDetail->oid = $this->oid;
+      $orderDetail->oid = $this->oid;  // order id: The foreign key of the orderDetail
       $orderDetail->menu_id = $menuInfo->id;
       $orderDetail->menu_name = $menuInfo->menu_name;
       $orderDetail->total = $item['quantity'];
-      $orderDetail->total_price = $item['subtotal'];
+      $orderDetail->total_price = $item['subtotal']; // total_price is a bad naming. 单价 is the price of a single item
       $orderDetail->add_time = new \DateTime();
       $orderDetail->note = $note;
-      $orderDetail->setPrice();
+      $orderDetail->setPrice(); // total * total_price
 
       $orderDetail->save();
     }

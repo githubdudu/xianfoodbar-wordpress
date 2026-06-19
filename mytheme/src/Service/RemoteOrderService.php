@@ -176,23 +176,14 @@ class RemoteOrderService
   /**
    *
    */
-  public function getPinNum(int $desk_id): int
+  public function getPinNum(int $desk_id, ?Order $order = null): int
   {
-    $query = Order::where('order_status', '<', 2)
-      ->where('is_delete', 0)
-      ->where('is_cancel', 0)
-      ->where('desk_id', $desk_id);
-
-    $deskOrderCount = $query->count();
+    $order = $order ?? new Order();
+    $deskOrderCount = $order->getDeskOrderCountByDeskId($desk_id);
 
     if ($deskOrderCount == 0) return 0;
 
-    $maxPinNum = Order::where('order_status', '<', 2)
-      ->where('is_delete', 0)
-      ->where('is_cancel', 0)
-      ->where('desk_id', $desk_id)
-      ->where('is_pin', 1)
-      ->max('pin_num');
+    $maxPinNum = $order->getDeskOrderMaxPinNumByDeskId($desk_id);
 
     return $maxPinNum ? $maxPinNum + 1 : 1;
 

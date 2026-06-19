@@ -163,12 +163,34 @@ class Order extends AbstractModel
 
   /**
    * Get the takeway order from the database by the order id
-   * 
+   *
    * @param int $id
    * @return Order|null
    */
   public static function getTakewayOrderById(int $id): ?Order
   {
     return Order::where('takeway_order', 'orderdata_' . $id)->first();
+  }
+
+  public function getDeskOrderCountByDeskId(int $desk_id): int
+  {
+    $query = Order::where('order_status', '<', 2)
+      ->where('is_delete', 0)
+      ->where('is_cancel', 0)
+      ->where('desk_id', $desk_id);
+
+    $deskOrderCount = $query->count();
+    return $deskOrderCount;
+  }
+
+  public function getDeskOrderMaxPinNumByDeskId(int $desk_id)
+  {
+    $maxPinNum = Order::where('order_status', '<', 2)
+      ->where('is_delete', 0)
+      ->where('is_cancel', 0)
+      ->where('desk_id', $desk_id)
+      ->where('is_pin', 1)
+      ->max('pin_num');
+    return $maxPinNum;
   }
 }

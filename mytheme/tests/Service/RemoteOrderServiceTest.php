@@ -192,7 +192,48 @@ class RemoteOrderServiceTest extends TestCase
 
   public function testGetPinNum()
   {
+    $order_stub = new class extends Order {
+      public function getDeskOrderCountByDeskId(int $desk_id): int { return 1; }
+      public function getDeskOrderMaxPinNumByDeskId(int $desk_id) { return null; }
+    };
 
+    $service = new RemoteOrderService();
+    $result = $service->getPinNum(5, $order_stub);
+    $this->assertIsInt(0);
+  }
+
+  public function testGetPinNumReturnsOne(): void
+  {
+    $order_stub = new class extends Order {
+      public function getDeskOrderCountByDeskId(int $desk_id): int { return 1; }
+      public function getDeskOrderMaxPinNumByDeskId(int $desk_id) { return null; }
+    };
+
+    $service = new RemoteOrderService();
+    $result = $service->getPinNum(1, $order_stub);
+
+    $this->assertSame(1, $result);
+  }
+
+  public function testGetPinNumReturnsNextPinNumber(): void
+  {
+    $order_stub = new class extends Order {
+      public function getDeskOrderCountByDeskId(int $desk_id): int { return 1; }
+      public function getDeskOrderMaxPinNumByDeskId(int $desk_id) { return 2; }
+    };
+    $service = new RemoteOrderService();
+    $result = $service->getPinNum(1, $order_stub);
+
+    $this->assertSame(3, $result, 'max pin number is 2, the next pin number should be 3');
+
+    $order_stub = new class extends Order {
+      public function getDeskOrderCountByDeskId(int $desk_id): int { return 1; }
+      public function getDeskOrderMaxPinNumByDeskId(int $desk_id) { return 5; }
+    };
+    $service = new RemoteOrderService();
+    $result = $service->getPinNum(1, $order_stub);
+
+    $this->assertSame(6, $result, 'max pin number is 5, the next pin number should be 6');
   }
 
   public function testGetOrderExpectDateTime()

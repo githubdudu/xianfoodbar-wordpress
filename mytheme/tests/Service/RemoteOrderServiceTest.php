@@ -36,6 +36,7 @@ class RemoteOrderServiceTest extends TestCase
       'metas' => [
         '_order_date' => '04.12.2025',
         '_order_time' => '730',
+        '_order_estimated_delivery_time' => '10.30',
         '_before_checkout_billing_form_pick_up_or_delivery' => 'delivery',
         'is_vat_exempt' => 'yes',
       ],
@@ -187,7 +188,49 @@ class RemoteOrderServiceTest extends TestCase
 
   public function testOrderBuilder()
   {
+    // Case 1: $is_new = false — returns early, Order fields untouched
+    $order = new Order();
+    (new RemoteOrderService())->orderBuilder($this->orderData, $order, false, 1);
+    $this->assertNull($order->phone);
 
+    // Case 2: $is_new = true — all fields populated
+    // getPinNum calls count() internally; mock wpdb aggregate=0 so it returns 0 immediately
+    $this->setupWpDb(nextResults: [(object)['aggregate' => 0]]);
+    $order = new Order();
+    (new RemoteOrderService())->orderBuilder($this->orderData, $order, true, 1);
+
+    $this->assertSame($this->orderData['phone'], $order->phone);
+    $this->assertSame($this->orderData['name'], $order->realname);
+    $this->assertSame($this->orderData['address'], $order->address);
+    $this->assertSame($this->orderData['order']['customer_note'], $order->note);
+    $this->assertSame($this->orderData['total'], $order->pay_price);
+    $this->assertSame('orderdata_' . $this->orderData['order_id'], $order->takeway_order);
+    $this->assertSame(1, $order->order_status);
+    $this->assertSame(0, $order->is_checked);
+    $this->assertSame(1, $order->is_takeway);
+    $this->assertSame(1, $order->desk_id);
+    $this->assertInstanceOf(\DateTime::class, $order->pay_time);
+    $this->assertRegExp('/^od\d{18}$/', $order->order_sn);
+    $this->assertSame(1, $order->is_vat_exempt);
+    $this->assertSame(1, $order->is_delivery);
+    $this->assertSame(0, $order->pin_num);
+    $this->assertSame(0, $order->is_pin);
+
+    // Case 3: is_vat_exempt absent — field not set
+    $this->setupWpDb(nextResults: [(object)['aggregate' => 0]]);
+    $data = $this->orderData;
+    unset($data['metas']['is_vat_exempt']);
+    $order = new Order();
+    (new RemoteOrderService())->orderBuilder($data, $order, true, 1);
+    $this->assertNull($order->is_vat_exempt);
+
+    // Case 4: pickup (not delivery) — is_delivery = 0
+    $this->setupWpDb(nextResults: [(object)['aggregate' => 0]]);
+    $data = $this->orderData;
+    $data['metas']['_before_checkout_billing_form_pick_up_or_delivery'] = 'pickup';
+    $order = new Order();
+    (new RemoteOrderService())->orderBuilder($data, $order, true, 1);
+    $this->assertSame(0, $order->is_delivery);
   }
 
   public function testGetPinNum()

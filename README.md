@@ -51,7 +51,7 @@ curl -s -X POST http://localhost:8080/api/remote/getdata/789 \
     },
     "items": [
       {
-        "product_id": 1,
+        "product_id": 37,
         "quantity": 2,
         "subtotal": "25.00",
         "meta_data": [

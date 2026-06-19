@@ -10,7 +10,7 @@ class RemoteOrderService
 {
   public static int $_12HOURS = 60 * 60 * 12;
   public static int $COMPLETED_STATUS = 2;
-  private int $order_sn;
+  private string $order_sn;
   private ?Desk $desk;
 
   public function orderSync(array $orderData, int $desk_id): string
@@ -55,6 +55,7 @@ class RemoteOrderService
 
     // Return for existing order
     if (!$is_new) {
+      $this->order_sn = $order->order_sn;
       return '更新完成';
     }
 
@@ -67,14 +68,14 @@ class RemoteOrderService
 
     // Build the order by orderBuilder function
     $this->orderBuilder($orderData, $order, $is_new, $desk_id);
+    
+    // Expose the order_sn for external use
+    $this->order_sn = $order->order_sn;
 
     // Save the order to database
     if (!$order->save()) {
       return '添加失败';
     }
-
-    // Set the order_sn for response data
-    $this->order_sn = $order->order_sn;
 
     // build menu list and save order details (products in the order)
     $orderDetailService = new RemoteOrderDetail($order->oid, $orderData['items']);
@@ -159,9 +160,9 @@ class RemoteOrderService
    * @param int $is_delivery Whether the order is delivery or pickup, 0 is pickup, 1 is delivery
    * @return string The date and the time slot of the order
    */
-  public function getOrderExpectDateTime(array $metas, int $is_delivery): string
+  public function getOrderExpectDateTime(array $metas, ?int $is_delivery): string
   {
-    if (!isset($metas['_order_date'])) {
+    if (!isset($metas['_order_date']) || $is_delivery === null) {
       return '';
     }
 
@@ -194,7 +195,7 @@ class RemoteOrderService
     return $this->desk;
   }
 
-  public function getOrderSn(): int
+  public function getOrderSn(): string
   {
     return $this->order_sn;
   }

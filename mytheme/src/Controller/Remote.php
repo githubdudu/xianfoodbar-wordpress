@@ -30,23 +30,39 @@ class Remote extends Wordpress
 
     $desk_id = $this->getOption('site_takeway_did', 0);
 
+    // Use id if order_id is not set, they should be the same
+    $orderData['order_id'] = $orderData['order_id'] ?? $id;
     $result = $remoteOS->orderSync($orderData, $desk_id);
 
     switch ($result) {
       case 'skipped-stale':
+        $response = $this->sendJson('skipped-stale', 200);
+        break;
       case 'skipped-no-total-cost':
-        $response = $this->sendJson('', 200);
+        $response = $this->sendJson('skipped-no-total-cost', 200);
         break;
       case 'completed-existed':
+        $response = $this->sendJson('completed-existed', 200);
+        break;
       case 'completed-trash':
+        $response = $this->sendJson('completed-trash', 200);
+        break;
       case 'completed-failed-cancelled':
-        $response = $this->sendJson('completed', 200);
+        $response = $this->sendJson('completed-failed-cancelled', 200);
         break;
       case '更新完成':
-        $response = $this->sendJson('更新完成', 200);
+        // Add order_sn/order_id to response data
+        $this->addJsonData('data', [
+          'order_id' => $remoteOS->getOrderSn()
+        ]);
+        $response = $this->sendJson('updated / 更新完成', 200);
         break;
       case '添加失败':
-        $response = $this->sendJson('添加失败', 500);
+        // Add order_sn/order_id to response data
+        $this->addJsonData('data', [
+          'order_id' => $remoteOS->getOrderSn()
+        ]);
+        $response = $this->sendJson('creation failed / 添加失败', 500);
         break;
       case '创建完成':
         $message->addMessage(
@@ -66,7 +82,7 @@ class Remote extends Wordpress
           'order_id' => $remoteOS->getOrderSn()
         ]);
 
-        $response = $this->sendJson('创建完成', 200);
+        $response = $this->sendJson('created / 创建完成', 200);
         break;
       default:
         $response = $this->sendJson('unknown status', 200);

@@ -108,13 +108,12 @@ class RemotePhpTest extends WebTestCase
   {
     $client = static::createClient();
     define('ORDER_ID', 123456);
-    define('EMPTY_DATA', '');
     $client->request('POST', '/api/remote/getdata/' . ORDER_ID, self::$order_data);
 
     $this->assertResponseStatusCodeSame(200, 'Response should be 200 for a stale order (older than 12 hours)');
 
     $data = json_decode($client->getResponse()->getContent(), true);
-    $this->assertSame(EMPTY_DATA, $data['message'], 'Response should be empty for a stale order (older than 12 hours)');
+    $this->assertSame('skipped-stale', $data['message'], 'Response should be empty for a stale order (older than 12 hours)');
 
     // Assign a datetime that just exceeds the 12-hour threshold
     // Only need a string, so date() is sufficient
@@ -124,7 +123,7 @@ class RemotePhpTest extends WebTestCase
     $client->request('POST', '/api/remote/getdata/' . ORDER_ID, self::$order_data);
     $this->assertResponseStatusCodeSame(200, 'Response should be 200 for a stale order (older than 12 hours)');
     $data = json_decode($client->getResponse()->getContent(), true);
-    $this->assertSame(EMPTY_DATA, $data['message'], 'Response should be empty for a stale order (older than 12 hours)');
+    $this->assertSame('skipped-stale', $data['message'], 'Response should be empty for a stale order (older than 12 hours)');
   }
 
   /**
@@ -147,6 +146,6 @@ class RemotePhpTest extends WebTestCase
     $this->assertResponseStatusCodeSame(200);
     $data = json_decode($client->getResponse()->getContent(), true);
     $this->assertNotSame('', $data['message'], 'Should not be a stale order and return empty message');
-    $this->assertSame('completed', $data['message'], 'Should return "completed" for an existing order with status 2');
+    $this->assertSame('completed-existed', $data['message'], 'Should return "completed" for an existing order with status 2');
   }
 }

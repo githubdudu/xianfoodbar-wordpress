@@ -47,9 +47,21 @@ class RemoteOrderServiceTest extends TestCase
     $this->existedOrder->order_status = 1;
     $this->existedOrder->is_delete = 0;
     $this->existedOrder->is_cancel = 0;
-    $this->existedOrder->takeway_order = 'orderdata_123456';
+    $this->existedOrder->takeway_order = 'orderdata_123';
+    $this->existedOrder->generateOrderSN();
   }
 
+
+  /**
+   * Eloquent's hydration (Model::newFromBuilder()) does (array) $row to read columns,
+   * which only works for a plain stdClass/array row — casting a live Order model instead
+   * yields its mangled internal properties (not 'order_sn' etc.) so those columns come
+   * back empty. Convert the fixture to a row shape before stubbing $wpdb with it.
+   */
+  private function existedOrderRow(): object
+  {
+    return (object) $this->existedOrder->getAttributes();
+  }
 
   /**
    * Replace the $wpdb stub and reset the WP-ORM Database singleton so it
@@ -102,7 +114,7 @@ class RemoteOrderServiceTest extends TestCase
 
     // If the coming order is in trash, mark the existed order as deleted
     $this->orderData['status'] = 'trash';
-    $this->setupWpDb(nextResults: [$this->existedOrder]);
+    $this->setupWpDb(nextResults: [$this->existedOrderRow()]);
     $this->assertSame('completed-trash', (new RemoteOrderService())->orderSync($this->orderData, 1));
   }
 
@@ -114,7 +126,8 @@ class RemoteOrderServiceTest extends TestCase
     $this->orderData['order_id'] = 123456;
 
     $this->orderData['status'] = 'failed';
-    $this->setupWpDb(nextResults: [$this->existedOrder]);
+    $this->setupWpDb(nextResults: [$this->existedOrderRow()]);
+
     $this->assertSame('completed-failed-cancelled', (new RemoteOrderService())->orderSync($this->orderData, 1));
   }
 
@@ -126,7 +139,8 @@ class RemoteOrderServiceTest extends TestCase
     $this->orderData['order_id'] = 123456;
 
     $this->orderData['status'] = 'cancelled';
-    $this->setupWpDb(nextResults: [$this->existedOrder]);
+    $this->setupWpDb(nextResults: [$this->existedOrderRow()]);
+
     $this->assertSame('completed-failed-cancelled', (new RemoteOrderService())->orderSync($this->orderData, 1));
   }
 
@@ -138,7 +152,8 @@ class RemoteOrderServiceTest extends TestCase
     $this->orderData['order_id'] = 123456;
     $this->orderData['status'] = 'completed';
 
-    $this->setupWpDb(nextResults: [$this->existedOrder]);
+    $this->setupWpDb(nextResults: [$this->existedOrderRow()]);
+
     $this->orderData['total'] = 0;
     $this->assertSame('skipped-no-total-cost', (new RemoteOrderService())->orderSync($this->orderData, 1));
   }
@@ -150,7 +165,8 @@ class RemoteOrderServiceTest extends TestCase
       ->format('Y-m-d H:i:s.u');
     $this->orderData['order_id'] = 123456;
     $this->orderData['status'] = 'completed';
-    $this->setupWpDb(nextResults: [$this->existedOrder]);
+    $this->setupWpDb(nextResults: [$this->existedOrderRow()]);
+
     $this->assertSame('更新完成', (new RemoteOrderService())->orderSync($this->orderData, 1));
   }
 

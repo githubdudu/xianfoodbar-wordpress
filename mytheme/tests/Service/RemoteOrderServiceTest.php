@@ -190,16 +190,6 @@ class RemoteOrderServiceTest extends TestCase
 
   }
 
-  public function testGetOrderSn()
-  {
-
-  }
-
-  public function testGetDesk()
-  {
-
-  }
-
   public function testGetPinNum()
   {
 
@@ -207,7 +197,45 @@ class RemoteOrderServiceTest extends TestCase
 
   public function testGetOrderExpectDateTime()
   {
+    $meta = [
+      '_order_date' => '04.12.2025',
+      '_order_time' => 730,
+      '_order_estimated_delivery_time' => '10.30'
+    ];
+    $is_delivery = true;
+    $expected = '2025-12-04' . '     ' . 'PM 10:30 - PM 11:30';
+    $actual = (new RemoteOrderService())->getOrderExpectDateTime($meta, $is_delivery);
+    $this->assertSame($expected, $actual);
 
+    $meta = [
+      '_order_date' => '12.04.2025',
+      '_order_time' => 730,
+      '_order_estimated_delivery_time' => '10.30'
+    ];
+    $is_delivery = false;
+    $expected = '2025-04-12' . '     ' . 'PM 7:30 - PM 8:00';
+    $actual = (new RemoteOrderService())->getOrderExpectDateTime($meta, $is_delivery);
+    $this->assertSame($expected, $actual);
+
+    $meta = [
+      '_order_date' => '04.12.2025',
+      '_order_time' => 1030,
+      '_order_estimated_delivery_time' => '10.30'
+    ];
+    $is_delivery = false;
+    $expected = '2025-12-04' . '     ' . 'AM 10:30 - AM 11:00';
+    $actual = (new RemoteOrderService())->getOrderExpectDateTime($meta, $is_delivery);
+    $this->assertSame($expected, $actual);
+
+    $meta = [
+      '_order_date' => '04.12.2025',
+      '_order_time' => 1130,
+      '_order_estimated_delivery_time' => '10.30'
+    ];
+    $is_delivery = false;
+    $expected = '2025-12-04' . '     ' . 'AM 11:30 - PM 12:00';
+    $actual = (new RemoteOrderService())->getOrderExpectDateTime($meta, $is_delivery);
+    $this->assertSame($expected, $actual);
   }
 
   public function testisWithin12hours()

@@ -91,7 +91,7 @@ class RemoteOrderService
    * @return   false | int
    *
    */
-  public function saveOrderDataToFile(array $orderData): false | int
+  public function saveOrderDataToFile(array $orderData): false|int
   {
     $result = file_put_contents(dirname(__DIR__, 2) . '/var/orderdata_' . date('YmdHis') . '.json', json_encode($orderData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
     return $result;
@@ -178,20 +178,24 @@ class RemoteOrderService
    */
   public function getPinNum(int $desk_id): int
   {
-    $query = Order::active()
+    $query = Order::where('order_status', '<', 2)
+      ->where('is_delete', 0)
+      ->where('is_cancel', 0)
       ->where('desk_id', $desk_id);
 
     $deskOrderCount = $query->count();
 
-    if ($deskOrderCount > 0) {
-      $maxPinNum = $query
-        ->where('is_pin', 1)
-        ->max('pin_num');
+    if ($deskOrderCount == 0) return 0;
 
-      return $maxPinNum ? $maxPinNum + 1 : 1;
-    }
+    $maxPinNum = Order::where('order_status', '<', 2)
+      ->where('is_delete', 0)
+      ->where('is_cancel', 0)
+      ->where('desk_id', $desk_id)
+      ->where('is_pin', 1)
+      ->max('pin_num');
 
-    return 0;
+    return $maxPinNum ? $maxPinNum + 1 : 1;
+
   }
 
   public function getDesk(): Desk

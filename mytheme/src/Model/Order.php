@@ -171,14 +171,4 @@ class Order extends AbstractModel
   {
     return Order::where('takeway_order', 'orderdata_' . $id)->first();
   }
-
-  /**
-   * Scope a query to only include active orders (not deleted, not canceled, and order_status less than 2)
-   */
-  public static function scopeActive(Builder $query): Builder
-  {
-    return $query->where('order_status', '<', 2)
-      ->where('is_delete', 0)
-      ->where('is_cancel', 0);
-  }
 }

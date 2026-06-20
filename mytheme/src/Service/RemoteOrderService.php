@@ -4,6 +4,8 @@ namespace App\Service;
 
 use App\Model\Order;
 use App\Model\Desk;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 
 class RemoteOrderService
@@ -12,6 +14,12 @@ class RemoteOrderService
   public static int $COMPLETED_STATUS = 2;
   private string $order_sn;
   private ?Desk $desk;
+  private LoggerInterface $logger;
+
+  public function __construct(?LoggerInterface $logger = null)
+  {
+    $this->logger = $logger ?? new NullLogger();
+  }
 
   public function orderSync(array $orderData, int $desk_id): string
   {
@@ -78,7 +86,7 @@ class RemoteOrderService
     }
 
     // build menu list and save order details (products in the order)
-    $orderDetailService = new RemoteOrderDetail($order->oid, $orderData['items']);
+    $orderDetailService = new RemoteOrderDetail($order->oid, $orderData['items'], $this->logger);
     $orderDetailService->saveOrderDetails();
 
     return '创建完成';

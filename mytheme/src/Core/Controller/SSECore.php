@@ -66,7 +66,9 @@ class SSECore
         }
 	        
         echo implode('', $content);
-        ob_flush();
+        if (ob_get_level() > 0) {
+            ob_flush();
+        }
         flush();
         return true;
     }

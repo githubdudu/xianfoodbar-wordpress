@@ -41,8 +41,8 @@ class RemoteOrderDetail
 
   private array $upgradeMenuList = [
     37 => [
-      'members' => [38, 371],
-      'combos' => ['38, 371' => 381]
+      'members' => [38, 370],
+      'combos' => ['38, 370' => 380]
     ],
     301 => [
       'members' => [51, 302],

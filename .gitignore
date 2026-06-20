@@ -2,6 +2,9 @@
 .env
 .env.local
 
+# Plugins
+plugins/**
+
 # Symfony cache & logs
 mytheme/var/cache/
 mytheme/var/log/
@@ -9,7 +12,7 @@ mytheme/var/orderdata_*.json
 mytheme/var/status/
 
 # Composer dependencies
-mytheme/vendor/
+mytheme/vendor/**
 
 # OS / IDE
 .DS_Store
@@ -18,3 +21,6 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo
+
+
+**/node_modules

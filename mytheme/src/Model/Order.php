@@ -19,7 +19,7 @@ use DateTime;
  * @property int $pay_discount 支付折扣
  * @property int $is_delete 是否删除
  * @property int $is_cancel 是否取消
- * @property int $order_status 订单状态
+ * @property int $order_status 订单状态 0-未支付 1-已支付 2-已完成
  * @property int $desk_id 桌号ID
  * @property int $is_read 是否已读
  * @property int $is_pin 是否为拼座
@@ -158,5 +158,39 @@ class Order extends AbstractModel
   public function generateOrderSN(): void
   {
     $this->order_sn = 'od' . date('YmdHis') . rand(1111, 9999);
+  }
+
+
+  /**
+   * Get the takeway order from the database by the order id
+   *
+   * @param int $id
+   * @return Order|null
+   */
+  public static function getTakewayOrderById(int $id): ?Order
+  {
+    return Order::where('takeway_order', 'orderdata_' . $id)->first();
+  }
+
+  public function getDeskOrderCountByDeskId(int $desk_id): int
+  {
+    $query = Order::where('order_status', '<', 2)
+      ->where('is_delete', 0)
+      ->where('is_cancel', 0)
+      ->where('desk_id', $desk_id);
+
+    $deskOrderCount = $query->count();
+    return $deskOrderCount;
+  }
+
+  public function getDeskOrderMaxPinNumByDeskId(int $desk_id)
+  {
+    $maxPinNum = Order::where('order_status', '<', 2)
+      ->where('is_delete', 0)
+      ->where('is_cancel', 0)
+      ->where('desk_id', $desk_id)
+      ->where('is_pin', 1)
+      ->max('pin_num');
+    return $maxPinNum;
   }
 }

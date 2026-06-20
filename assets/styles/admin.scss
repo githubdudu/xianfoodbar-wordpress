@@ -1,0 +1,51 @@
+#admin {
+  width: 100%;
+  height: 100%;
+}
+
+.tips {
+  margin-bottom: 5px;
+  > span {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border: 1px solid #cfcfcf;
+  }
+
+  .tips_red {
+    background: #cc5656;
+  }
+}
+
+.sudoku_data_col {
+  height: 80px;
+  text-align: center;
+  font-size: 16px;
+  color: #4777b6;
+  border: 1px solid #cfcfcf;
+  line-height: 80px;
+  margin-right: 5px;
+}
+
+.sudoku_data_col_selected {
+  background: #cc5656;
+  color: #fff;
+}
+
+.sudoku_col {
+  display: block !important;
+  flex: 0 0 12.5%;
+}
+
+@media not all and (min-width: 640px) {
+  .sudoku_col {
+    flex: 0 0 33.33333%;
+  }
+}
+
+@media not all and (min-width: 1124px) {
+  .sudoku_col {
+    flex: 0 0 24%;
+  }
+}

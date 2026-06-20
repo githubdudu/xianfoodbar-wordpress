@@ -1,0 +1,545 @@
+{
+    "order_id": 28671,
+    "address": " ",
+    "city": "",
+    "name": "Lawrence ",
+    "phone": "0210507659",
+    "total": "43.00",
+    "price": 0,
+    "date": {
+        "date": "2025-12-04 19:18:46.000000",
+        "timezone_type": 3,
+        "timezone": "Pacific\/Auckland"
+    },
+    "order": {
+        "id": 28671,
+        "parent_id": 0,
+        "status": "completed",
+        "currency": "NZD",
+        "version": "10.3.6",
+        "prices_include_tax": false,
+        "date_created": {
+            "date": "2025-12-04 19:18:23.000000",
+            "timezone_type": 3,
+            "timezone": "Pacific\/Auckland"
+        },
+        "date_modified": {
+            "date": "2025-12-04 19:18:47.000000",
+            "timezone_type": 3,
+            "timezone": "Pacific\/Auckland"
+        },
+        "discount_total": "0",
+        "discount_tax": "0",
+        "shipping_total": "0",
+        "shipping_tax": "0",
+        "cart_tax": "0",
+        "total": "43.00",
+        "total_tax": "0",
+        "customer_id": 0,
+        "order_key": "wc_order_A0AFp5aSmgFnN",
+        "billing": {
+            "first_name": "Lawrence",
+            "last_name": "",
+            "company": "",
+            "address_1": "",
+            "address_2": "",
+            "city": "",
+            "state": "",
+            "postcode": "",
+            "country": "NZ",
+            "email": "larry@larrynom.com",
+            "phone": "0210507659"
+        },
+        "shipping": {
+            "first_name": "Lawrence",
+            "last_name": "",
+            "company": "",
+            "address_1": "",
+            "address_2": "",
+            "city": "",
+            "state": "",
+            "postcode": "",
+            "country": "NZ",
+            "phone": ""
+        },
+        "payment_method": "windcave",
+        "payment_method_title": "Windcave Payment",
+        "transaction_id": "0000000d16b8cf87",
+        "customer_ip_address": "203.211.72.7",
+        "customer_user_agent": "Mozilla\/5.0 (Linux; Android 10; K) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Mobile Safari\/537.36",
+        "created_via": "checkout",
+        "customer_note": "",
+        "date_completed": {
+            "date": "2025-12-04 19:18:47.000000",
+            "timezone_type": 3,
+            "timezone": "Pacific\/Auckland"
+        },
+        "date_paid": {
+            "date": "2025-12-04 19:18:46.000000",
+            "timezone_type": 3,
+            "timezone": "Pacific\/Auckland"
+        },
+        "cart_hash": "b1e1fdd63849162f70390cdadda3a77c",
+        "order_stock_reduced": true,
+        "download_permissions_granted": true,
+        "new_order_email_sent": true,
+        "recorded_sales": true,
+        "recorded_coupon_usage_counts": true,
+        "number": "28671",
+        "meta_data": [
+            {
+                "id": 197389,
+                "key": "is_vat_exempt",
+                "value": "no"
+            },
+            {
+                "id": 197390,
+                "key": "_before_checkout_billing_form_pick_up_or_delivery",
+                "value": "pickup"
+            },
+            {
+                "id": 197391,
+                "key": "_order_date",
+                "value": "04.12.2025"
+            },
+            {
+                "id": 197392,
+                "key": "_order_time",
+                "value": "730"
+            },
+            {
+                "id": 197393,
+                "key": "_order_please_tell_us_abo",
+                "value": ""
+            },
+            {
+                "id": 197394,
+                "key": "logic_results_storage",
+                "value": {
+                    "billing_address_1": {
+                        "show": false
+                    },
+                    "billing_city": {
+                        "show": false
+                    },
+                    "billing_postcode": {
+                        "show": false
+                    }
+                }
+            },
+            {
+                "id": 197395,
+                "key": "exwfood_order_method",
+                "value": ""
+            },
+            {
+                "id": 197396,
+                "key": "_wc_order_attribution_source_type",
+                "value": "organic"
+            },
+            {
+                "id": 197397,
+                "key": "_wc_order_attribution_referrer",
+                "value": "https:\/\/www.google.com\/"
+            },
+            {
+                "id": 197398,
+                "key": "_wc_order_attribution_utm_source",
+                "value": "google"
+            },
+            {
+                "id": 197399,
+                "key": "_wc_order_attribution_utm_medium",
+                "value": "organic"
+            },
+            {
+                "id": 197400,
+                "key": "_wc_order_attribution_session_entry",
+                "value": "https:\/\/xianfoods.co.nz\/"
+            },
+            {
+                "id": 197401,
+                "key": "_wc_order_attribution_session_start_time",
+                "value": "2025-12-04 06:13:39"
+            },
+            {
+                "id": 197402,
+                "key": "_wc_order_attribution_session_pages",
+                "value": "3"
+            },
+            {
+                "id": 197403,
+                "key": "_wc_order_attribution_session_count",
+                "value": "1"
+            },
+            {
+                "id": 197404,
+                "key": "_wc_order_attribution_user_agent",
+                "value": "Mozilla\/5.0 (Linux; Android 10; K) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Mobile Safari\/537.36"
+            },
+            {
+                "id": 197405,
+                "key": "_wc_order_attribution_device_type",
+                "value": "Mobile"
+            },
+            {
+                "id": 197406,
+                "key": "_windcave_session_meta",
+                "value": ",0,0"
+            },
+            {
+                "id": 197407,
+                "key": "_windcave_session_id",
+                "value": "00001300398705650d4d6598bf0d008c"
+            },
+            {
+                "id": 197408,
+                "key": "_windcave_session_url",
+                "value": "https:\/\/sec.windcave.com\/pxmi3\/FCD195CB652C1001634ADBD9724CE803C4A74C908FDD3FA051D737E072388415AF8EB25633CC46C30D307D89A66E86B50"
+            }
+        ],
+        "line_items": {
+            "8951": {
+                "legacy_values": null,
+                "legacy_cart_item_key": null,
+                "legacy_package_key": null
+            },
+            "8952": {
+                "legacy_values": null,
+                "legacy_cart_item_key": null,
+                "legacy_package_key": null
+            },
+            "8953": {
+                "legacy_values": null,
+                "legacy_cart_item_key": null,
+                "legacy_package_key": null
+            },
+            "8954": {
+                "legacy_values": null,
+                "legacy_cart_item_key": null,
+                "legacy_package_key": null
+            }
+        },
+        "tax_lines": [],
+        "shipping_lines": [],
+        "fee_lines": [],
+        "coupon_lines": []
+    },
+    "items": [
+        {
+            "id": 8951,
+            "order_id": 28671,
+            "name": "21.清汤羊肉手扯面",
+            "product_id": 24143,
+            "variation_id": 0,
+            "quantity": 1,
+            "tax_class": "",
+            "subtotal": "14.5",
+            "subtotal_tax": "0",
+            "total": "14.5",
+            "total_tax": "0",
+            "taxes": {
+                "total": [],
+                "subtotal": []
+            },
+            "meta_data": []
+        },
+        {
+            "id": 8952,
+            "order_id": 28671,
+            "name": "85.白吉饼\/1pc",
+            "product_id": 24294,
+            "variation_id": 0,
+            "quantity": 2,
+            "tax_class": "",
+            "subtotal": "3",
+            "subtotal_tax": "0",
+            "total": "3",
+            "total_tax": "0",
+            "taxes": {
+                "total": [],
+                "subtotal": []
+            },
+            "meta_data": []
+        },
+        {
+            "id": 8953,
+            "order_id": 28671,
+            "name": "301.麻辣牛肉手扯面",
+            "product_id": 24209,
+            "variation_id": 0,
+            "quantity": 1,
+            "tax_class": "",
+            "subtotal": "17",
+            "subtotal_tax": "0",
+            "total": "17",
+            "total_tax": "0",
+            "taxes": {
+                "total": [],
+                "subtotal": []
+            },
+            "meta_data": [
+                {
+                    "id": 83246,
+                    "key": "302.加大Extra Large (+&#36;1.50)",
+                    "value": "L"
+                },
+                {
+                    "id": 83247,
+                    "key": "_exoptions",
+                    "value": [
+                        {
+                            "name": "302.加大Extra Large",
+                            "value": "L",
+                            "type_of_price": "",
+                            "price": 1.5,
+                            "_type": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 8954,
+            "order_id": 28671,
+            "name": "6. 腊汁肉夹馍",
+            "product_id": 25381,
+            "variation_id": 0,
+            "quantity": 1,
+            "tax_class": "",
+            "subtotal": "8.5",
+            "subtotal_tax": "0",
+            "total": "8.5",
+            "total_tax": "0",
+            "taxes": {
+                "total": [],
+                "subtotal": []
+            },
+            "meta_data": []
+        }
+    ],
+    "extact": "",
+    "subtotal": 43,
+    "base_data": {
+        "id": 28671,
+        "parent_id": 0,
+        "status": "completed",
+        "currency": "NZD",
+        "version": "10.3.6",
+        "prices_include_tax": false,
+        "date_created": {
+            "date": "2025-12-04 19:18:23.000000",
+            "timezone_type": 3,
+            "timezone": "Pacific\/Auckland"
+        },
+        "date_modified": {
+            "date": "2025-12-04 19:18:47.000000",
+            "timezone_type": 3,
+            "timezone": "Pacific\/Auckland"
+        },
+        "discount_total": "0",
+        "discount_tax": "0",
+        "shipping_total": "0",
+        "shipping_tax": "0",
+        "cart_tax": "0",
+        "total": "43.00",
+        "total_tax": "0",
+        "customer_id": 0,
+        "order_key": "wc_order_A0AFp5aSmgFnN",
+        "billing": {
+            "first_name": "Lawrence",
+            "last_name": "",
+            "company": "",
+            "address_1": "",
+            "address_2": "",
+            "city": "",
+            "state": "",
+            "postcode": "",
+            "country": "NZ",
+            "email": "larry@larrynom.com",
+            "phone": "0210507659"
+        },
+        "shipping": {
+            "first_name": "Lawrence",
+            "last_name": "",
+            "company": "",
+            "address_1": "",
+            "address_2": "",
+            "city": "",
+            "state": "",
+            "postcode": "",
+            "country": "NZ",
+            "phone": ""
+        },
+        "payment_method": "windcave",
+        "payment_method_title": "Windcave Payment",
+        "transaction_id": "0000000d16b8cf87",
+        "customer_ip_address": "203.211.72.7",
+        "customer_user_agent": "Mozilla\/5.0 (Linux; Android 10; K) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Mobile Safari\/537.36",
+        "created_via": "checkout",
+        "customer_note": "",
+        "date_completed": {
+            "date": "2025-12-04 19:18:47.000000",
+            "timezone_type": 3,
+            "timezone": "Pacific\/Auckland"
+        },
+        "date_paid": {
+            "date": "2025-12-04 19:18:46.000000",
+            "timezone_type": 3,
+            "timezone": "Pacific\/Auckland"
+        },
+        "cart_hash": "b1e1fdd63849162f70390cdadda3a77c",
+        "order_stock_reduced": true,
+        "download_permissions_granted": true,
+        "new_order_email_sent": true,
+        "recorded_sales": true,
+        "recorded_coupon_usage_counts": true,
+        "number": "28671"
+    },
+    "meta_data": [
+        {
+            "id": 197389,
+            "key": "is_vat_exempt",
+            "value": "no"
+        },
+        {
+            "id": 197390,
+            "key": "_before_checkout_billing_form_pick_up_or_delivery",
+            "value": "pickup"
+        },
+        {
+            "id": 197391,
+            "key": "_order_date",
+            "value": "04.12.2025"
+        },
+        {
+            "id": 197392,
+            "key": "_order_time",
+            "value": "730"
+        },
+        {
+            "id": 197393,
+            "key": "_order_please_tell_us_abo",
+            "value": ""
+        },
+        {
+            "id": 197394,
+            "key": "logic_results_storage",
+            "value": {
+                "billing_address_1": {
+                    "show": false
+                },
+                "billing_city": {
+                    "show": false
+                },
+                "billing_postcode": {
+                    "show": false
+                }
+            }
+        },
+        {
+            "id": 197395,
+            "key": "exwfood_order_method",
+            "value": ""
+        },
+        {
+            "id": 197396,
+            "key": "_wc_order_attribution_source_type",
+            "value": "organic"
+        },
+        {
+            "id": 197397,
+            "key": "_wc_order_attribution_referrer",
+            "value": "https:\/\/www.google.com\/"
+        },
+        {
+            "id": 197398,
+            "key": "_wc_order_attribution_utm_source",
+            "value": "google"
+        },
+        {
+            "id": 197399,
+            "key": "_wc_order_attribution_utm_medium",
+            "value": "organic"
+        },
+        {
+            "id": 197400,
+            "key": "_wc_order_attribution_session_entry",
+            "value": "https:\/\/xianfoods.co.nz\/"
+        },
+        {
+            "id": 197401,
+            "key": "_wc_order_attribution_session_start_time",
+            "value": "2025-12-04 06:13:39"
+        },
+        {
+            "id": 197402,
+            "key": "_wc_order_attribution_session_pages",
+            "value": "3"
+        },
+        {
+            "id": 197403,
+            "key": "_wc_order_attribution_session_count",
+            "value": "1"
+        },
+        {
+            "id": 197404,
+            "key": "_wc_order_attribution_user_agent",
+            "value": "Mozilla\/5.0 (Linux; Android 10; K) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Mobile Safari\/537.36"
+        },
+        {
+            "id": 197405,
+            "key": "_wc_order_attribution_device_type",
+            "value": "Mobile"
+        },
+        {
+            "id": 197406,
+            "key": "_windcave_session_meta",
+            "value": ",0,0"
+        },
+        {
+            "id": 197407,
+            "key": "_windcave_session_id",
+            "value": "00001300398705650d4d6598bf0d008c"
+        },
+        {
+            "id": 197408,
+            "key": "_windcave_session_url",
+            "value": "https:\/\/sec.windcave.com\/pxmi3\/FCD195CB652C1001634ADBD9724CE803C4A74C908FDD3FA051D737E072388415AF8EB25633CC46C30D307D89A66E86B50"
+        }
+    ],
+    "metas": {
+        "is_vat_exempt": "no",
+        "_before_checkout_billing_form_pick_up_or_delivery": "pickup",
+        "_order_date": "04.12.2025",
+        "_order_time": "730",
+        "_order_please_tell_us_abo": "",
+        "logic_results_storage": {
+            "billing_address_1": {
+                "show": false
+            },
+            "billing_city": {
+                "show": false
+            },
+            "billing_postcode": {
+                "show": false
+            }
+        },
+        "exwfood_order_method": "",
+        "_wc_order_attribution_source_type": "organic",
+        "_wc_order_attribution_referrer": "https:\/\/www.google.com\/",
+        "_wc_order_attribution_utm_source": "google",
+        "_wc_order_attribution_utm_medium": "organic",
+        "_wc_order_attribution_session_entry": "https:\/\/xianfoods.co.nz\/",
+        "_wc_order_attribution_session_start_time": "2025-12-04 06:13:39",
+        "_wc_order_attribution_session_pages": "3",
+        "_wc_order_attribution_session_count": "1",
+        "_wc_order_attribution_user_agent": "Mozilla\/5.0 (Linux; Android 10; K) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Mobile Safari\/537.36",
+        "_wc_order_attribution_device_type": "Mobile",
+        "_windcave_session_meta": ",0,0",
+        "_windcave_session_id": "00001300398705650d4d6598bf0d008c",
+        "_windcave_session_url": "https:\/\/sec.windcave.com\/pxmi3\/FCD195CB652C1001634ADBD9724CE803C4A74C908FDD3FA051D737E072388415AF8EB25633CC46C30D307D89A66E86B50"
+    },
+    "expand": [],
+    "status": "completed"
+}

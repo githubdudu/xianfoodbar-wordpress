@@ -1,0 +1,80 @@
+[
+    {
+        "id": 278,
+        "key": "38.加大Extra Large (+&#36;1.50)",
+        "value": "L"
+    },
+    {
+        "id": 279,
+        "key": "加菜，蛋，肉，面 Extras (+&#36;2.50)",
+        "value": "130.加菜.../份Extra Vegs"
+    },
+    {
+        "id": 280,
+        "key": "加菜，蛋，肉，面 Extras (+&#36;3.00)",
+        "value": "131.加蛋.../个Extra Egg"
+    },
+    {
+        "id": 281,
+        "key": "加菜，蛋，肉，面 Extras (+&#36;5.50)",
+        "value": "132.加肉.../份Extra Meat"
+    },
+    {
+        "id": 282,
+        "key": "加菜，蛋，肉，面 Extras (+&#36;2.00)",
+        "value": "133.加面...Extra Noodles"
+    },
+    {
+        "id": 283,
+        "key": "加菜，蛋，肉，面 Extras (+&#36;2.50)",
+        "value": "134.加拉条...Extra Stretched Noodles"
+    },
+    {
+        "id": 284,
+        "key": "_exoptions",
+        "value": [
+            {
+                "name": "38.加大Extra Large",
+                "value": "L",
+                "type_of_price": "",
+                "price": 1.5,
+                "_type": ""
+            },
+            {
+                "name": "加菜，蛋，肉，面 Extras",
+                "value": "130.加菜.../份Extra Vegs",
+                "type_of_price": "",
+                "price": 2.5,
+                "_type": ""
+            },
+            {
+                "name": "加菜，蛋，肉，面 Extras",
+                "value": "131.加蛋.../个Extra Egg",
+                "type_of_price": "",
+                "price": 3,
+                "_type": ""
+            },
+            {
+                "name": "加菜，蛋，肉，面 Extras",
+                "value": "132.加肉.../份Extra Meat",
+                "type_of_price": "",
+                "price": 5.5,
+                "_type": ""
+            },
+            {
+                "name": "加菜，蛋，肉，面 Extras",
+                "value": "133.加面...Extra Noodles",
+                "type_of_price": "",
+                "price": 2,
+                "_type": ""
+            },
+            {
+                "name": "加菜，蛋，肉，面 Extras",
+                "value": "134.加拉条...Extra Stretched Noodles",
+                "type_of_price": "",
+                "price": 2.5,
+                "_type": ""
+            }
+        ]
+    }
+]

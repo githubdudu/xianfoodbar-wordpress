@@ -26,6 +26,7 @@
     "symfony/property-access": "6.0.19",
     "symfony/property-info": "6.0.19",
     "symfony/proxy-manager-bridge": "6.0.19",
+    "symfony/runtime": "6.0.*",
     "symfony/security-csrf": "6.0.19",
     "symfony/serializer": "6.0.14",
     "symfony/twig-bundle": "6.0.19",
@@ -42,7 +43,8 @@
     },
     "sort-packages": true,
     "allow-plugins": {
-      "symfony/flex": true
+      "symfony/flex": true,
+      "symfony/runtime": true
     },
     "platform": {
       "php": "8.1.0"
@@ -86,6 +88,9 @@
     }
   },
   "require-dev": {
+    "phpunit/phpunit": "dev-renovate/8.5-github-actions",
+    "symfony/browser-kit": "6.0.*",
+    "symfony/css-selector": "6.0.*",
     "symfony/maker-bundle": "1.50.0"
   }
 }

@@ -5,23 +5,27 @@ namespace App\Service;
 use App\Model\Menu;
 use App\Model\Order;
 use App\Model\OrderDetail;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class RemoteOrderDetail
 {
   private int $oid;
   private array $items;
   private array $menuList = [];
+  private LoggerInterface $logger;
 
-  public function __construct(int $oid, array $items)
+  public function __construct(int $oid, array $items, ?LoggerInterface $logger = null)
   {
     $this->oid = $oid;
     $this->items = $items;
+    $this->logger = $logger ?? new NullLogger();
   }
 
   public function saveOrderDetails()
   {
     foreach ($this->items as $item) {
-      if (!empty($item) || !empty($item['product_id'])) {
+      if (empty($item) || !isset($item['product_id'])) {
         continue;
       }
 
@@ -33,6 +37,7 @@ class RemoteOrderDetail
       $menuInfo = Menu::where('out_site_id', $item['product_id'])->first();
 
       if (!$menuInfo) {
+        $this->logger->error('product_id' . $item['product_id'] . ' not found');
         continue;
       }
 

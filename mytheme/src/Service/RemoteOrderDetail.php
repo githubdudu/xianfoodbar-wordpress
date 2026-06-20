@@ -11,10 +11,70 @@ use Psr\Log\NullLogger;
 class RemoteOrderDetail
 {
   private int $oid;
+  /**
+   * @var array<int, array{
+   *   id: int,
+   *   order_id: int,
+   *   name: string,
+   *   product_id: int,
+   *   variation_id: int,
+   *   quantity: int,
+   *   tax_class: string,
+   *   subtotal: string,
+   *   subtotal_tax: string,
+   *   total: string,
+   *   total_tax: string,
+   *   taxes: array{
+   *     total: array,
+   *     subtotal: array,
+   *   },
+   *   meta_data: array<int, array{
+   *     id: int,
+   *     key: string,
+   *     value: string | array,
+   *   }>,
+   * }> $items
+   */
   private array $items;
   private array $menuList = [];
   private LoggerInterface $logger;
 
+  private array $upgradeMenuList = [
+    37 => [
+      'members' => [38, 371],
+      'combos' => ['38, 371' => 381]
+    ],
+    301 => [
+      'members' => [51, 302],
+      'combos' => ['51, 302' => 3020]
+    ]
+  ];
+
+  /**
+   * @param int $oid
+   * @param array<int, array{
+   *   id: int,
+   *   order_id: int,
+   *   name: string,
+   *   product_id: int,
+   *   variation_id: int,
+   *   quantity: int,
+   *   tax_class: string,
+   *   subtotal: string,
+   *   subtotal_tax: string,
+   *   total: string,
+   *   total_tax: string,
+   *   taxes: array{
+   *     total: array,
+   *     subtotal: array,
+   *   },
+   *   meta_data: array<int, array{
+   *     id: int,
+   *     key: string,
+   *     value: string | array,
+   *   }>,
+   * }> $items
+   */
   public function __construct(int $oid, array $items, ?LoggerInterface $logger = null)
   {
     $this->oid = $oid;
@@ -30,11 +90,12 @@ class RemoteOrderDetail
       }
 
       $note = $this->resolveNote($item);
+      $real_product_id = $this->checkUpgradeOption($item['meta_data'], $item['product_id']);
 
       // The out_site_id is the connection between the online order and the local menu. 
       // It is set when the menu is created. 
       // The product_id is from database of WooCommerce.
-      $menuInfo = Menu::where('out_site_id', $item['product_id'])->first();
+      $menuInfo = Menu::where('out_site_id',  $real_product_id)->first();
 
       if (!$menuInfo) {
         $this->logger->error('product_id' . $item['product_id'] . ' not found');
@@ -106,5 +167,47 @@ class RemoteOrderDetail
     }
 
     return $note;
+  }
+
+  /**
+   * @param array<int, array{
+   *   id: int,
+   *   key: string,
+   *   value: string | array,
+   * }> $meta_data
+   * @param int $original_product_id
+   */
+  public function checkUpgradeOption(array $meta_data, int $original_product_id): int
+  {
+    $key_list = [];
+    foreach ($meta_data ?? [] as $extra) {
+      if (!is_string($extra['value'])) {
+        continue;
+      }
+      $menu_id = explode('.', $extra['key'], 2)[0];
+      if (is_numeric($menu_id)) {
+        $key_list[] = intval($menu_id);
+      }
+    }
+
+    // Filter out by $this->upgradeMenuList[$original_product_id]['members']
+    $key_list = array_intersect($key_list, $this->upgradeMenuList[$original_product_id]['members']);
+
+    // Count == 0
+    if (count($key_list) == 0) {
+      return $original_product_id;
+    }
+
+    // Count == 1
+    if (count($key_list) == 1) {
+      return $key_list[0];
+    }
+
+    // Count == 2
+    // Sort and join the key list
+    sort($key_list);
+    $combo_key = implode(', ', $key_list);
+
+    return $this->upgradeMenuList[$original_product_id]['combos'][$combo_key] ?? $original_product_id;
   }
 }

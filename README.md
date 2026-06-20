@@ -28,7 +28,7 @@ curl -X POST http://localhost:8080/api/remote/getdata/123 \
       "order_key": "wc_test",
       "date_created": {"date": "'"$(date '+%Y-%m-%d %H:%M:%S')"'"}
     },
-    "items": [{"product_id": 1, "quantity": 2, "subtotal": "25.00", "meta_data": []}],
+    "items": [{"product_id": 37, "quantity": 2, "subtotal": "25.00", "meta_data": []}],
     "metas": {}
   }'
 ```
@@ -52,11 +52,36 @@ curl -s -X POST http://localhost:8080/api/remote/getdata/789 \
     "items": [
       {
         "product_id": 37,
-        "quantity": 2,
+        "quantity": 1,
         "subtotal": "25.00",
         "meta_data": [
-          {"key": "Meat", "value": "Extra&#038;"},
-          {"key": "Vegs", "value": "No vegetables"}
+          {
+            "id": 38,
+            "key": "38.加大Extra Large (+&#36;1.50)",
+            "value": "L"
+          },
+          {
+            "id": 132,
+            "key": "加菜，蛋，肉，面 Extras (+&#36;5.50)",
+            "value": "132.加肉.../份Extra Meat"
+          },
+          {
+            "id": 371,
+            "key": "371.加大Extra Large (+&#36;1.50)",
+            "value": "腊汁肉机切面"
+          }
+        ]
+      },
+      {
+        "product_id": 37,
+        "quantity": 1,
+        "subtotal": "25.00",
+        "meta_data": [
+          {
+            "id": 38,
+            "key": "38.加大Extra Large (+&#36;1.50)",
+            "value": "L"
+          }
         ]
       }
     ],

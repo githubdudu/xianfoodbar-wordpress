@@ -54,6 +54,7 @@ curl -s -X POST http://localhost:8080/api/remote/getdata/789 \
         "product_id": 37,
         "quantity": 1,
         "subtotal": "25.00",
+        "name": "37.腊汁肉干拌面",
         "meta_data": [
           {
             "id": 38,
@@ -66,8 +67,8 @@ curl -s -X POST http://localhost:8080/api/remote/getdata/789 \
             "value": "132.加肉.../份Extra Meat"
           },
           {
-            "id": 371,
-            "key": "371.加大Extra Large (+&#36;1.50)",
+            "id": 370,
+            "key": "370.腊汁肉机切面",
             "value": "腊汁肉机切面"
           }
         ]
@@ -76,6 +77,7 @@ curl -s -X POST http://localhost:8080/api/remote/getdata/789 \
         "product_id": 37,
         "quantity": 1,
         "subtotal": "25.00",
+        "name": "37.腊汁肉干拌面",
         "meta_data": [
           {
             "id": 38,

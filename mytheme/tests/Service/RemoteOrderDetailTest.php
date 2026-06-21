@@ -57,9 +57,10 @@ class RemoteOrderDetailTest extends TestCase
   {
     $JSON_ITEM = <<<'JSON'
       {
-        "product_id": 37,
+        "product_id": 100001,
         "quantity": 1,
         "subtotal": "25.00",
+        "name": "37.腊汁肉干拌面",
         "meta_data": [
           {
             "id": 38,
@@ -80,7 +81,7 @@ class RemoteOrderDetailTest extends TestCase
       }
       JSON;
     $item = json_decode($JSON_ITEM, true);
-    $actual = $this->remoteOrderDetail->checkUpgradeOption($item['meta_data'], $item['product_id']);
+    $actual = $this->remoteOrderDetail->checkUpgradeOption($item['meta_data'], 37);
 
     $this->assertEquals(380, $actual);
 
@@ -95,7 +96,7 @@ class RemoteOrderDetailTest extends TestCase
       }
       JSON;
     $item = json_decode($JSON_ITEM, true);
-    $actual = $this->remoteOrderDetail->checkUpgradeOption($item['meta_data'], $item['product_id']);
+    $actual = $this->remoteOrderDetail->checkUpgradeOption($item['meta_data'], 37);
 
     $this->assertEquals(37, $actual);
 
@@ -115,7 +116,7 @@ class RemoteOrderDetailTest extends TestCase
       }
       JSON;
     $item = json_decode($JSON_ITEM, true);
-    $actual = $this->remoteOrderDetail->checkUpgradeOption($item['meta_data'],$item['product_id']);
+    $actual = $this->remoteOrderDetail->checkUpgradeOption($item['meta_data'], 37);
 
     $this -> assertEquals(38, $actual);
 

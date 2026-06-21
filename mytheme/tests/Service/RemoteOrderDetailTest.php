@@ -200,7 +200,7 @@ class RemoteOrderDetailTest extends TestCase
 
     foreach($names as $name => $expected) {
 
-      $actual = $this->remoteOrderDetail->getMenuIdFromItemName($name);
+      $actual = $this->remoteOrderDetail->getMenuNumFromItemName($name);
       $this->assertEquals($expected, $actual);
 
     }

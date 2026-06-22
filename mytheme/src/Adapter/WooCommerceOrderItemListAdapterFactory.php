@@ -49,7 +49,7 @@ class WooCommerceOrderItemListAdapterFactory implements OrderItemListFactoryInte
       }
     }
 
-    // There are nullish values , may need filter todo
-    return $this->orderItemList;
+    // There are nullish values , filter out them.
+    return array_filter($this->orderItemList);
   }
 }

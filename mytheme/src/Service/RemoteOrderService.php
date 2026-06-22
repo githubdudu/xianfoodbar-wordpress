@@ -2,8 +2,12 @@
 
 namespace App\Service;
 
+use App\Adapter\OrderItemInterface;
+use App\Adapter\WooCommerceOrderItemListAdapterFactory;
+use App\Model\Menu;
 use App\Model\Order;
 use App\Model\Desk;
+use App\Model\OrderDetail;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -71,12 +75,12 @@ class RemoteOrderService
     $this->desk = Desk::find($desk_id);
     if (!$this->desk) {
       $this->desk = Desk::where('is_takeway', 1)->first();
-      $desk_id = $this->desk->id;
+      $desk_id = $this->desk ? $this->desk->id : 99;
     }
 
     // Build the order by orderBuilder function
     $this->orderBuilder($orderData, $order, $is_new, $desk_id);
-    
+
     // Expose the order_sn for external use
     $this->order_sn = $order->order_sn;
 
@@ -85,9 +89,12 @@ class RemoteOrderService
       return '添加失败';
     }
 
-    // build menu list and save order details (products in the order)
-    $orderDetailService = new RemoteOrderDetail($order->oid, $orderData['items'], $this->logger);
-    $orderDetailService->saveOrderDetails();
+    // build order item list and save order items (products in the order)
+    $preparedItems = (new WooCommerceOrderItemListAdapterFactory())->createList($order['items']);
+    $saved = $this->saveOrderItems($order->oid, $preparedItems, $this->logger);
+    if (!$saved) {
+      return '添加失败';
+    }
 
     return '创建完成';
   }
@@ -228,5 +235,39 @@ class RemoteOrderService
 
     $currentTime = time() - self::$_12HOURS;
     return $time >= $currentTime;
+  }
+
+
+  /**
+   * @param int $oid
+   * @param OrderItemInterface[] $items
+   * @param ?LoggerInterface $logger
+   *
+   * @return bool
+   */
+  public function saveOrderItems(int $oid, array $items, ?LoggerInterface $logger = null): bool
+  {
+    $saved = true;
+
+    foreach ($items as $item) {
+      $menuInfo = Menu::where('menu_num', $item->getMenuNum())->first();
+
+      if (!$menuInfo) continue;
+
+      $orderDetail = (new OrderDetail())->fill([
+        'oid' => $oid,
+        'menu_id' => $menuInfo->id,
+        'menu_name' => $menuInfo->menu_name,
+        'total' => $item->getQuantity(), // weird naming for quantity
+        'total_price' => $item->getUnitPrice(), // weird name total_price, but actually is unit price
+        'add_time' => new \DateTime(),
+        'note' => $item->getNote(),
+      ]);
+
+      $orderDetail->setPrice();
+      $saved = $saved && $orderDetail->save();
+    }
+
+    return $saved;
   }
 }

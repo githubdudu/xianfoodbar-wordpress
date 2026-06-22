@@ -26,8 +26,8 @@ class RemoteOrderDetailTest extends TestCase
             "value": "132.加肉.../份Extra Meat"
           },
           {
-            "id": 371,
-            "key": "371.加大Extra Large (+&#36;1.50)",
+            "id": 370,
+            "key": "370.腊汁肉机切面 (+&#36;1.50)",
             "value": "腊汁肉机切面"
           }
         ]

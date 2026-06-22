@@ -17,7 +17,11 @@ class WooCommerceOrderItemAdapterFactory implements OrderItemFactoryInterface
   {
     // If $rawItem has key: "id" , "key", "value", it is option item
     if (isset($rawItem['name']) && isset($rawItem['value']) && isset($rawItem['price'])) {
-      return new WooCommerceOrderOptionItemAdapter($rawItem);
+      try {
+        return new WooCommerceOrderOptionItemAdapter($rawItem);
+      } catch (\InvalidArgumentException $e) {
+        return null;
+      }
     }
 
     // If $rawItem has key: "id", "meta_data"

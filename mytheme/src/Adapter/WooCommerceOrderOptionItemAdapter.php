@@ -4,6 +4,9 @@ namespace App\Adapter;
 
 class WooCommerceOrderOptionItemAdapter extends WooCommerceOrderItemAdapter implements OrderItemInterface
 {
+
+  static array $GLOBAL_OPTIONS = [130, 131, 132, 133, 134];
+
   /**
    * @param array{
    *   name: string,
@@ -61,6 +64,10 @@ class WooCommerceOrderOptionItemAdapter extends WooCommerceOrderItemAdapter impl
   public function __construct(array $rawItems)
   {
     parent::__construct($rawItems);
+    // Filter out the one not in $GLOBAL_OPTIONS
+    if (in_array($this->getMenuNum(), self::$GLOBAL_OPTIONS, true)) {
+      throw new \InvalidArgumentException('Not Global Options');
+    }
   }
 
   /**

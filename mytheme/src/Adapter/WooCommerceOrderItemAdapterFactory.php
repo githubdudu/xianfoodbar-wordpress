@@ -25,7 +25,7 @@ class WooCommerceOrderItemAdapterFactory implements OrderItemFactoryInterface
     }
 
     // If $rawItem has key: "id", "meta_data"
-    if (isset($rawItem['id']) && isset($rawItem['meta_data']) && isset($rawItem['name'])) {
+    if (isset($rawItem['product_id']) && isset($rawItem['meta_data']) && isset($rawItem['name'])) {
       return new WooCommerceOrderItemAdapter($rawItem);
     }
 

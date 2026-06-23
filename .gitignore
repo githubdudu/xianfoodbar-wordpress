@@ -5,6 +5,11 @@
 # Plugins
 plugins/**
 
+# Shop volumes
+shop/.themes/**
+shop/.plugins/**
+shop/mysql/**
+
 # Symfony cache & logs
 mytheme/var/cache/
 mytheme/var/log/

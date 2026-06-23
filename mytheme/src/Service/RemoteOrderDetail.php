@@ -11,10 +11,70 @@ use Psr\Log\NullLogger;
 class RemoteOrderDetail
 {
   private int $oid;
+  /**
+   * @var array<int, array{
+   *   id: int,
+   *   order_id: int,
+   *   name: string,
+   *   product_id: int,
+   *   variation_id: int,
+   *   quantity: int,
+   *   tax_class: string,
+   *   subtotal: string,
+   *   subtotal_tax: string,
+   *   total: string,
+   *   total_tax: string,
+   *   taxes: array{
+   *     total: array,
+   *     subtotal: array,
+   *   },
+   *   meta_data: array<int, array{
+   *     id: int,
+   *     key: string,
+   *     value: string | array,
+   *   }>,
+   * }> $items
+   */
   private array $items;
   private array $menuList = [];
   private LoggerInterface $logger;
 
+  private array $upgradeMenuList = [
+    37 => [
+      'members' => [38, 370],
+      'combos' => ['38, 370' => 380]
+    ],
+    301 => [
+      'members' => [51, 302],
+      'combos' => ['51, 302' => 3020]
+    ]
+  ];
+
+  /**
+   * @param int $oid
+   * @param array<int, array{
+   *   id: int,
+   *   order_id: int,
+   *   name: string,
+   *   product_id: int,
+   *   variation_id: int,
+   *   quantity: int,
+   *   tax_class: string,
+   *   subtotal: string,
+   *   subtotal_tax: string,
+   *   total: string,
+   *   total_tax: string,
+   *   taxes: array{
+   *     total: array,
+   *     subtotal: array,
+   *   },
+   *   meta_data: array<int, array{
+   *     id: int,
+   *     key: string,
+   *     value: string | array,
+   *   }>,
+   * }> $items
+   */
   public function __construct(int $oid, array $items, ?LoggerInterface $logger = null)
   {
     $this->oid = $oid;
@@ -29,12 +89,16 @@ class RemoteOrderDetail
         continue;
       }
 
+      // This is the num of the menu in the local store
+      $menu_num = $this->getMenuNumFromItemName($item['name']);
+
       $note = $this->resolveNote($item);
+      $real_menu_num = $this->checkUpgradeOption($item['meta_data'], $menu_num);
 
       // The out_site_id is the connection between the online order and the local menu. 
-      // It is set when the menu is created. 
-      // The product_id is from database of WooCommerce.
-      $menuInfo = Menu::where('out_site_id', $item['product_id'])->first();
+      // It is set when the menu is created and set to be equal to product_id from the database of WooCommerce.
+      // removed out_site_id query, with menu_num: like 37.
+      $menuInfo = Menu::where('menu_num', $real_menu_num)->first();
 
       if (!$menuInfo) {
         $this->logger->error('product_id' . $item['product_id'] . ' not found');
@@ -87,9 +151,9 @@ class RemoteOrderDetail
        *  Examples return :
        *     74.加大Extra Large (+&#36;4.00) -> L
        *     加菜，蛋，肉，面 Extras (+&#36;2.50) -> 130.加菜.../份Extra Vegs
-       * 
+       *
        *  Looks like the code is wrong. It should deal with $extra['key'] which contains the encoded
-       *  html code, instead of $extra['value']. 
+       *  html code, instead of $extra['value'].
        *  So what we should have got $value to be the price
        */
       if (!is_string($extra['value'])) {
@@ -106,5 +170,57 @@ class RemoteOrderDetail
     }
 
     return $note;
+  }
+
+  /**
+   * @param array<int, array{
+   *   id: int,
+   *   key: string,
+   *   value: string | array,
+   * }> $meta_data
+   * @param int $original_menu_num
+   */
+  public function checkUpgradeOption(array $meta_data, int $original_menu_num): int
+  {
+    $key_list = [];
+    foreach ($meta_data ?? [] as $extra) {
+      if (!is_string($extra['value'])) {
+        continue;
+      }
+      $menu_num = $this->getMenuNumFromItemName($extra['key']);
+      if ($menu_num) {
+        $key_list[] = $menu_num;
+      }
+    }
+
+    // Filter out by $this->upgradeMenuList[$original_product_id]['members']
+    $key_list = array_intersect($key_list, $this->upgradeMenuList[$original_menu_num]['members']);
+
+    // Count == 0
+    if (count($key_list) == 0) {
+      return $original_menu_num;
+    }
+
+    // Count == 1
+    if (count($key_list) == 1) {
+      return $key_list[0];
+    }
+
+    // Count == 2
+    // Sort and join the key list
+    sort($key_list);
+    $combo_key = implode(', ', $key_list);
+
+    return $this->upgradeMenuList[$original_menu_num]['combos'][$combo_key] ?? $original_menu_num;
+  }
+
+  /**
+   * @param string $name the string we get from name of order item
+   *
+   * @return int menu_id This is the id of the menu in the local store
+   */
+  public function getMenuNumFromItemName(string $name): int
+  {
+    return intval($name);
   }
 }

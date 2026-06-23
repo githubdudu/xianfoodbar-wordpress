@@ -89,16 +89,16 @@ class RemoteOrderDetail
         continue;
       }
 
-      // This is the id of the menu in the local store
-      $menu_id = $this->getMenuIdFromItemName($item['name']);
+      // This is the num of the menu in the local store
+      $menu_num = $this->getMenuNumFromItemName($item['name']);
 
       $note = $this->resolveNote($item);
-      $real_menu_id = $this->checkUpgradeOption($item['meta_data'], $menu_id);
+      $real_menu_num = $this->checkUpgradeOption($item['meta_data'], $menu_num);
 
       // The out_site_id is the connection between the online order and the local menu. 
-      // It is set when the menu is created. 
-      // The product_id is from database of WooCommerce.
-      $menuInfo = Menu::where('menu_num', $real_menu_id)->first();
+      // It is set when the menu is created and set to be equal to product_id from the database of WooCommerce.
+      // removed out_site_id query, with menu_num: like 37.
+      $menuInfo = Menu::where('menu_num', $real_menu_num)->first();
 
       if (!$menuInfo) {
         $this->logger->error('product_id' . $item['product_id'] . ' not found');
@@ -178,27 +178,27 @@ class RemoteOrderDetail
    *   key: string,
    *   value: string | array,
    * }> $meta_data
-   * @param int $original_menu_id
+   * @param int $original_menu_num
    */
-  public function checkUpgradeOption(array $meta_data, int $original_menu_id): int
+  public function checkUpgradeOption(array $meta_data, int $original_menu_num): int
   {
     $key_list = [];
     foreach ($meta_data ?? [] as $extra) {
       if (!is_string($extra['value'])) {
         continue;
       }
-      $menu_id = $this->getMenuIdFromItemName($extra['key']);
-      if ($menu_id) {
-        $key_list[] = $menu_id;
+      $menu_num = $this->getMenuNumFromItemName($extra['key']);
+      if ($menu_num) {
+        $key_list[] = $menu_num;
       }
     }
 
     // Filter out by $this->upgradeMenuList[$original_product_id]['members']
-    $key_list = array_intersect($key_list, $this->upgradeMenuList[$original_menu_id]['members']);
+    $key_list = array_intersect($key_list, $this->upgradeMenuList[$original_menu_num]['members']);
 
     // Count == 0
     if (count($key_list) == 0) {
-      return $original_menu_id;
+      return $original_menu_num;
     }
 
     // Count == 1
@@ -211,7 +211,7 @@ class RemoteOrderDetail
     sort($key_list);
     $combo_key = implode(', ', $key_list);
 
-    return $this->upgradeMenuList[$original_menu_id]['combos'][$combo_key] ?? $original_menu_id;
+    return $this->upgradeMenuList[$original_menu_num]['combos'][$combo_key] ?? $original_menu_num;
   }
 
   /**
@@ -219,7 +219,7 @@ class RemoteOrderDetail
    *
    * @return int menu_id This is the id of the menu in the local store
    */
-  public function getMenuIdFromItemName(string $name): int
+  public function getMenuNumFromItemName(string $name): int
   {
     return intval($name);
   }

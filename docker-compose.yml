@@ -2,6 +2,7 @@ services:
 
   db:
     image: mysql:8.0
+    container_name: xianfoodbar-db-1
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
@@ -18,6 +19,7 @@ services:
 
   wordpress:
     image: wordpress:php8.1-apache
+    container_name: xianfoodbar-wordpress-1
     restart: unless-stopped
     depends_on:
       db:
@@ -54,7 +56,56 @@ services:
         exec docker-entrypoint.sh apache2-foreground
       "
 
+  shop-db:
+    image: mysql:8.0
+    container_name: xianfoodbar-shop-db-1
+    volumes:
+      - shop_db_data:/var/lib/mysql
+      - ./shop/mysql/custom.cnf:/etc/mysql/conf.d/custom.cnf
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootwordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+  shop-wordpress:
+    depends_on:
+      shop-db:
+        condition: service_healthy
+    image: wordpress:php8.1-apache
+    container_name: xianfoodbar-shop-wordpress-1
+    ports:
+      - 8081:80
+    restart: unless-stopped
+    volumes:
+      - shop_wordpress_core:/var/www/html
+      - ./shop/.plugins:/var/www/html/wp-content/plugins
+      - ./shop/.themes:/var/www/html/wp-content/themes
+    environment:
+      WORDPRESS_DB_HOST: shop-db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    entrypoint: >
+      bash -c "
+        chown -R www-data:www-data /var/www/html &&
+        exec docker-entrypoint.sh apache2-foreground
+      "
+
 volumes:
   db_data:
   wp_core:
   wp_uploads:
+  shop_db_data:
+    external: true
+    name: xianfoodbar-shop_db_data
+  shop_wordpress_core:
+    external: true
+    name: xianfoodbar-shop_wordpress_core

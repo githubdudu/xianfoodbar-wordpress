@@ -14,7 +14,7 @@ class WooCommerceOrderItemListAdapterFactoryTest extends TestCase
    */
   public function testCreateList()
   {
-    
+
     $items = [
       [
         "product_id" => 37,
@@ -36,6 +36,33 @@ class WooCommerceOrderItemListAdapterFactoryTest extends TestCase
             "id" => 370,
             "key" => "370.腊汁肉机切面",
             "value" => "腊汁肉机切面"
+          ],
+          [
+            "id" => "332",
+            "key" => "_exoptions",
+            "value" => [
+              [
+                "name" => "38.加大Extra Large",
+                "value" => "L",
+                "type_of_price" => "",
+                "price" => 1.5,
+                "_type" => ""
+              ],
+              [
+                "name" => "加菜，蛋，肉，面 Extras",
+                "value" => "132.加肉.../份Extra Meat",
+                "type_of_price" => "",
+                "price" => 5.5,
+                "_type" => ""
+              ],
+              [
+                "name" => "370.腊汁肉机切面",
+                "value" => "Plain noodles",
+                "type_of_price" => "",
+                "price" => 0,
+                "_type" => ""
+              ],
+            ]
           ]
         ]
       ],
@@ -49,6 +76,19 @@ class WooCommerceOrderItemListAdapterFactoryTest extends TestCase
             "id" => 38,
             "key" => "38.加大Extra Large (+&#36;1.50)",
             "value" => "L"
+          ],
+          [
+            "id" => "332",
+            "key" => "_exoptions",
+            "value" => [
+              [
+                "name" => "38.加大Extra Large",
+                "value" => "L",
+                "type_of_price" => "",
+                "price" => 1.5,
+                "_type" => ""
+              ]
+            ]
           ]
         ]
       ],
@@ -64,7 +104,7 @@ class WooCommerceOrderItemListAdapterFactoryTest extends TestCase
 
     $preparedItems = (new WooCommerceOrderItemListAdapterFactory())->createList($items);
 
-    self::assertCount(3, $preparedItems);
+    self::assertCount(4, $preparedItems);
 
     self::assertSame(380, $preparedItems[0]->getMenuNum());
     self::assertSame("25.00", $preparedItems[0]->getUnitPrice());
@@ -74,17 +114,19 @@ class WooCommerceOrderItemListAdapterFactoryTest extends TestCase
       "370.腊汁肉机切面 -> 腊汁肉机切面\n"
       , $preparedItems[0]->getNote());
 
-    self::assertSame(38, $preparedItems[1]->getMenuNum());
-    self::assertSame("21.00", $preparedItems[1]->getUnitPrice());
+    self::assertSame(132, $preparedItems[1]->getMenuNum());
+    self::assertSame("5.5", $preparedItems[1]->getUnitPrice());
     self::assertSame(1, $preparedItems[1]->getQuantity());
-    self::assertSame("38.加大Extra Large (+&#36;1.50) -> L\n"
-      , $preparedItems[1]->getNote());
+    self::assertSame("", $preparedItems[1]->getNote());
 
-    self::assertSame(37, $preparedItems[2]->getMenuNum());
-    self::assertSame("11.00", $preparedItems[2]->getUnitPrice());
-    self::assertSame(3, $preparedItems[2]->getQuantity());
-    self::assertSame(""
-      , $preparedItems[2]->getNote());
+    self::assertSame(38, $preparedItems[2]->getMenuNum());
+    self::assertSame("21.00", $preparedItems[2]->getUnitPrice());
+    self::assertSame(1, $preparedItems[2]->getQuantity());
+    self::assertSame("38.加大Extra Large (+&#36;1.50) -> L\n", $preparedItems[2]->getNote());
+
+    self::assertSame(37, $preparedItems[3]->getMenuNum());
+    self::assertSame("11.00", $preparedItems[3]->getUnitPrice());
+    self::assertSame(3, $preparedItems[3]->getQuantity());
+    self::assertSame("", $preparedItems[3]->getNote());
   }
-
 }

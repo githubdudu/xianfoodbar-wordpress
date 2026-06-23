@@ -38,9 +38,9 @@ class WooCommerceOrderItemListAdapterFactory implements OrderItemListFactoryInte
       // Create the items hidden in meta
       foreach ($item['meta_data'] as $option_items) {
         // Find '_exoptions'
-        if (isset($option_items['_exoptions'])) {
+        if ($option_items['key'] === "_exoptions") {
 
-          foreach ($option_items['_exoptions'] as $option_item) {
+          foreach ($option_items['value'] as $option_item) {
 
             $this->orderItemList[] = $wcOrderItemAdapterFactory->create($option_item);
 
@@ -50,6 +50,6 @@ class WooCommerceOrderItemListAdapterFactory implements OrderItemListFactoryInte
     }
 
     // There are nullish values , filter out them.
-    return array_filter($this->orderItemList);
+    return array_values(array_filter($this->orderItemList));
   }
 }

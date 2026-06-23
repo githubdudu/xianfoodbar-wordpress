@@ -17,11 +17,11 @@ class WooCommerceOrderItemAdapterFactory implements OrderItemFactoryInterface
   {
     // If $rawItem has key: "id" , "key", "value", it is option item
     if (isset($rawItem['name']) && isset($rawItem['value']) && isset($rawItem['price'])) {
-      try {
-        return new WooCommerceOrderOptionItemAdapter($rawItem);
-      } catch (\InvalidArgumentException $e) {
+      $WCOrderOptionIA = new WooCommerceOrderOptionItemAdapter($rawItem);
+      if ($WCOrderOptionIA->getMenuNum() == 0) {
         return null;
       }
+      return $WCOrderOptionIA;
     }
 
     // If $rawItem has key: "id", "meta_data"

@@ -65,9 +65,9 @@ class WooCommerceOrderItemAdapter implements OrderItemInterface
 
     $itemNameWithMenuNum = $this->getMenuNumString();
     $menu_num = $this->getMenuNumFromItemName($itemNameWithMenuNum);
-    $this->realMenuNum = $this->checkUpgradeOption($rawItem['meta_data'], $menu_num);
+    $this->realMenuNum = $this->checkUpgradeOption($rawItem['meta_data'] ?? null, $menu_num);
 
-    $this->note = $this->resolveNote($rawItem['meta_data']);
+    $this->note = $this->resolveNote($rawItem['meta_data'] ?? null);
   }
 
 

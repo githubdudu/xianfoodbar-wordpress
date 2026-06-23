@@ -64,14 +64,10 @@ class WooCommerceOrderOptionItemAdapter extends WooCommerceOrderItemAdapter impl
   public function __construct(array $rawItems)
   {
     parent::__construct($rawItems);
-    // Filter out the one not in $GLOBAL_OPTIONS
-    if (in_array($this->getMenuNum(), self::$GLOBAL_OPTIONS, true)) {
-      throw new \InvalidArgumentException('Not Global Options');
-    }
   }
 
   /**
-   * Override. The global extra option always count as one
+   * @Override. The global extra option always count as one
    *
    * @return int
    */
@@ -81,7 +77,7 @@ class WooCommerceOrderOptionItemAdapter extends WooCommerceOrderItemAdapter impl
   }
 
   /**
-   * Override. The global extra option price is located in "price"
+   * @Override. The global extra option price is located in "price"
    *
    * @return string
    */
@@ -91,6 +87,7 @@ class WooCommerceOrderOptionItemAdapter extends WooCommerceOrderItemAdapter impl
   }
 
   /**
+   * @override
    * Get a string like this "132.加肉.../份Extra Meat"
    * Override. The global extra option string is located in "value"
    *
@@ -99,5 +96,16 @@ class WooCommerceOrderOptionItemAdapter extends WooCommerceOrderItemAdapter impl
   public function getMenuNumString(): string
   {
     return $this->rawItem['value'];
+  }
+
+  /**
+   * @override the supclass WooCommerceOrderItemAdapter
+   * @param array|null $meta_data
+   * @param int $original_menu_num
+   * @return int
+   */
+  public function checkUpgradeOption(?array $meta_data, int $original_menu_num): int
+  {
+    return $original_menu_num;
   }
 }

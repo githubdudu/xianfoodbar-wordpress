@@ -6,7 +6,7 @@ namespace App\Adapter;
  * A factory class.
  * Take the raw Items array and dispatch them to WooCommerceOrderItemAdapterFactory
  */
-class WooCommerceOrderItemListAdapterFactory
+class WooCommerceOrderItemListFactory
 {
   /**
    * May contain null value

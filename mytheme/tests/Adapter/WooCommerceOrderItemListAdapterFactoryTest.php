@@ -3,7 +3,7 @@
 namespace App\Tests\Adapter;
 
 use App\Adapter\WooCommerceOrderItemAdapterFactory;
-use App\Adapter\WooCommerceOrderItemListAdapterFactory;
+use App\Adapter\WooCommerceOrderItemListFactory;
 use PHPUnit\Framework\TestCase;
 
 class WooCommerceOrderItemListAdapterFactoryTest extends TestCase
@@ -103,7 +103,7 @@ class WooCommerceOrderItemListAdapterFactoryTest extends TestCase
       ]
     ];
 
-    $preparedItems = (new WooCommerceOrderItemListAdapterFactory(
+    $preparedItems = (new WooCommerceOrderItemListFactory(
       new WooCommerceOrderItemAdapterFactory()
     ))->createList($items);
 

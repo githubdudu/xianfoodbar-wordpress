@@ -2,7 +2,8 @@
 
 namespace App\Tests\Adapter;
 
-use App\Adapter\WooCommerceOrderItemListAdapterFactory;
+use App\Adapter\WooCommerceOrderItemAdapterFactory;
+use App\Adapter\WooCommerceOrderItemListFactory;
 use PHPUnit\Framework\TestCase;
 
 class WooCommerceOrderItemListAdapterFactoryTest extends TestCase
@@ -102,7 +103,9 @@ class WooCommerceOrderItemListAdapterFactoryTest extends TestCase
       ]
     ];
 
-    $preparedItems = (new WooCommerceOrderItemListAdapterFactory())->createList($items);
+    $preparedItems = (new WooCommerceOrderItemListFactory(
+      new WooCommerceOrderItemAdapterFactory()
+    ))->createList($items);
 
     self::assertCount(4, $preparedItems);
 

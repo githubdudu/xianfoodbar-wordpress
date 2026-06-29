@@ -6,7 +6,7 @@ namespace App\Adapter;
  * A factory class.
  * Take the raw Items array and dispatch them to WooCommerceOrderItemAdapterFactory
  */
-class WooCommerceOrderItemListAdapterFactory implements OrderItemListFactoryInterface
+class WooCommerceOrderItemListAdapterFactory
 {
   /**
    * May contain null value
@@ -17,6 +17,14 @@ class WooCommerceOrderItemListAdapterFactory implements OrderItemListFactoryInte
 
 
   /**
+   * @param OrderItemFactoryInterface $orderItemFactory
+   */
+  public function __construct(private readonly OrderItemFactoryInterface $orderItemFactory)
+  {
+
+  }
+
+  /**
    * Take the raw Items array and dispatch them to WooCommerceOrderItemAdapterFactory
    * Items here can be seen as two level tree structure.
    *
@@ -25,7 +33,6 @@ class WooCommerceOrderItemListAdapterFactory implements OrderItemListFactoryInte
    */
   public function createList(array $rawItems): array
   {
-    $wcOrderItemAdapterFactory = new WooCommerceOrderItemAdapterFactory();
 
     foreach ($rawItems as $item) {
       if (empty($item) || !isset($item['name'])) {
@@ -33,7 +40,7 @@ class WooCommerceOrderItemListAdapterFactory implements OrderItemListFactoryInte
       }
 
       // Create the items
-      $this->orderItemList[] = $wcOrderItemAdapterFactory->create($item);
+      $this->orderItemList[] = $this->orderItemFactory->create($item);
 
       // Create the items hidden in meta
       foreach ($item['meta_data'] as $option_items) {
@@ -42,7 +49,7 @@ class WooCommerceOrderItemListAdapterFactory implements OrderItemListFactoryInte
 
           foreach ($option_items['value'] as $option_item) {
 
-            $this->orderItemList[] = $wcOrderItemAdapterFactory->create($option_item);
+            $this->orderItemList[] = $this->orderItemFactory->create($option_item);
 
           }
         }

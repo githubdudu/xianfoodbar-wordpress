@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Adapter\OrderItemInterface;
+use App\Adapter\WooCommerceOrderItemAdapterFactory;
 use App\Adapter\WooCommerceOrderItemListFactory;
 use App\Model\Menu;
 use App\Model\Order;
@@ -90,7 +91,9 @@ class RemoteOrderService
     }
 
     // build order item list and save order items (products in the order)
-    $preparedItems = (new WooCommerceOrderItemListFactory())->createList($orderData['items']);
+    $preparedItems = (new WooCommerceOrderItemListFactory(
+      new WooCommerceOrderItemAdapterFactory()
+    ))->createList($orderData['items']);
     $saved = $this->saveOrderItems($order->oid, $preparedItems, $this->logger);
     if (!$saved) {
       return '添加失败';
